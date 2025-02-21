@@ -20,6 +20,7 @@ namespace Milestonemanager.Controllers
         }
 
         // List all admins
+        [HttpGet]
         public async Task<IActionResult> ListAdmin()
         {
             var admins = await _adminService.GetAdmins();
@@ -35,21 +36,25 @@ namespace Milestonemanager.Controllers
         }
 
         // View details of a single admin along with assigned tasks
-        public async Task<IActionResult> DetailsAdmin(int id)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
-            var admin = await _adminService.GetAdminById(id);
-            if (admin == null)
-            {
-                return NotFound();
-            }
 
             var tasks = await _taskService.GetEventTasksByAdminId(id);
-            ViewBag.Tasks = tasks;
-            return View(admin);
+            var admin = await _adminService.GetAdminById(id);
+            ViewData["Tasks"] = tasks;
+            ViewData["AdminName"] = admin.AdminName;
+            return View();
+
+
+
+
+
         }
 
         // Show the form to create a new admin
-        public IActionResult CreateAdmin()
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
         }
@@ -59,20 +64,24 @@ namespace Milestonemanager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAdmin(AdminDto adminDto)
         {
-            if (ModelState.IsValid)
+
+            var response = await _adminService.AddAdmin(adminDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Created)
             {
-                var response = await _adminService.AddAdmin(adminDto);
-                if (response.Status == ServiceResponse.ServiceStatus.Success)
-                {
-                    return RedirectToAction(nameof(ListAdmin));
-                }
-                ModelState.AddModelError("", string.Join(", ", response.Messages));
+                return RedirectToAction("ListAdmin", "AdminPage");
             }
-            return View(adminDto);
+            else
+            {
+                return RedirectToAction("Create", "AdminPage");
+            }
+
+
+
         }
 
         // Show the edit form for an admin
-        public async Task<IActionResult> EditAdmin(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
             var admin = await _adminService.GetAdminById(id);
             if (admin == null)
@@ -83,7 +92,7 @@ namespace Milestonemanager.Controllers
             // Convert Admin to AdminDto
             var adminDto = new AdminDto
             {
-                AdminId = admin.AdminId,
+                AdminId = id,
                 AdminName = admin.AdminName,
                 AdminEmail = admin.AdminEmail,
                 AdminPhone = admin.AdminPhone,
@@ -97,33 +106,30 @@ namespace Milestonemanager.Controllers
         // Handle the update of an admin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAdmin(int id, Admin admin)
+        public async Task<IActionResult> EditAdmin(AdminDto adminDto)
         {
-            if (id != admin.AdminId)
+
+            var response = await _adminService.UpdateAdmin(adminDto);
+
+            if (response.Status == ServiceResponse.ServiceStatus.Updated)
             {
-                return BadRequest();
+                return RedirectToAction("ListAdmin", "AdminPage");
+            }
+            else
+            {
+                return RedirectToAction("Edit", "AdminPage");
             }
 
-            if (ModelState.IsValid)
-            {
-                var response = await _adminService.UpdateAdmin(admin);
-                if (response.Status == ServiceResponse.ServiceStatus.Success)
-                {
-                    return RedirectToAction(nameof(ListAdmin));
-                }
-                ModelState.AddModelError("", string.Join(", ", response.Messages));
-            }
-            return View(admin);
         }
 
         // Show the delete confirmation page
-        public async Task<IActionResult> DeleteAdmin(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
             var admin = await _adminService.GetAdminById(id);
-            if (admin == null) return NotFound();
             var adminDto = new AdminDto
             {
-                AdminId = admin.AdminId,
+                AdminId = id,
                 AdminName = admin.AdminName,
                 AdminEmail = admin.AdminEmail,
                 AdminPhone = admin.AdminPhone,
@@ -133,17 +139,20 @@ namespace Milestonemanager.Controllers
         }
 
         // Handle the deletion of an admin
-        [HttpPost, ActionName("DeleteAdmin")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteAdmin(int id)
         {
             var response = await _adminService.DeleteAdmin(id);
-            if (response.Status == ServiceResponse.ServiceStatus.Success)
+            if (response.Status == ServiceResponse.ServiceStatus.Deleted)
             {
-                return RedirectToAction(nameof(ListAdmin));
+                return RedirectToAction("ListAdmin", "AdminPage");
             }
-            ModelState.AddModelError("", string.Join(", ", response.Messages));
-            return View();
+            else
+            {
+                return RedirectToAction("Delete", "AdminPage");
+            }
+
         }
     }
 }

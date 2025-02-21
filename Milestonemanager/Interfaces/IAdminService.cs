@@ -11,7 +11,7 @@ namespace Milestonemanager.Interfaces
         Task<Admin> GetAdminById(int id);
 
         Task<ServiceResponse> AddAdmin(AdminDto adminDto);
-        Task<ServiceResponse> UpdateAdmin(Admin admin);
+        Task<ServiceResponse> UpdateAdmin(AdminDto adminDto);
         Task<ServiceResponse> DeleteAdmin(int id);
     }
 }

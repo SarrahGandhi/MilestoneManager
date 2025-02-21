@@ -1,6 +1,6 @@
 @model Milestonemanager.Models.AdminDto
 @{
-    ViewData["Title"] = "ConfirmDelete";
+    ViewData["Title"] = "DeleteAdmin";
 
 }
 <h1>ConfirmDelete</h1>
@@ -16,9 +16,9 @@
         </dd>
 
     </dl>
-    <form asp-action="Delete" asp-route-id="@Model.AdminId">
+    <form asp-action="DeleteAdmin" asp-route-id="@Model.AdminId">
         <input type="hidden" asp-for="AdminId" />
         <input type="submit" value="Delete" class="btm btn-danger" />
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="ListAdmin">Back to List</a>
     </form>
 </div>

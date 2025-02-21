@@ -80,7 +80,7 @@ namespace Milestonemanager.Controllers
         /// <param name="updateadmin">The updated admin object.</param>
         /// <returns>NoContent if successful, or an appropriate error response.</returns>
         [HttpPut("UpdateAdmin/{id}")]
-        public async Task<ActionResult> UpdateAdmin(int id, Admin updateadmin)
+        public async Task<ActionResult> UpdateAdmin(int id, AdminDto updateadmin)
         {
             if (id != updateadmin.AdminId)
             {

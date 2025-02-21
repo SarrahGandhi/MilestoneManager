@@ -1,12 +1,11 @@
 @model Milestonemanager.Models.AdminDto
-
 @{
-    ViewData["Title"] = "Create Admin";
+    ViewData["Title"] = "EditAdmin";
 }
 
-<h2>Create New Admin</h2>
-
-<form asp-action="CreateAdmin" method="post">
+<h2>Edit Admin</h2>
+<form asp-action="EditAdmin" method="post">
+    <input type="hidden" asp-for="AdminId" />
     <div class="form-group">
         <label asp-for="AdminName" class="control-label"></label>
         <input asp-for="AdminName" class="form-control" required />
@@ -34,10 +33,6 @@
         <span asp-validation-for="AdminCategory" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Create Admin</button>
+    <button type="submit" class="btn btn-primary mt-3">EditAdmin</button>
     <a asp-action="ListAdmin" class="btn btn-secondary mt-3">Cancel</a>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

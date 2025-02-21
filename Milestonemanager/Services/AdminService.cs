@@ -41,6 +41,7 @@ namespace CoreEntityFramework.Services
             }
             Admin admins = new Admin()
             {
+                AdminId = admin.AdminId,
                 AdminName = admin.AdminName,
                 AdminEmail = admin.AdminEmail,
                 AdminPhone = admin.AdminPhone,
@@ -72,15 +73,16 @@ namespace CoreEntityFramework.Services
             serviceResponse.CreatedId = admin.AdminId;
             return serviceResponse;
         }
-        public async Task<ServiceResponse> UpdateAdmin(Admin admin)
+        public async Task<ServiceResponse> UpdateAdmin(AdminDto adminDto)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
             Admin addadmin = new Admin()
             {
-                AdminName = admin.AdminName,
-                AdminEmail = admin.AdminEmail,
-                AdminPhone = admin.AdminPhone,
-                AdminCategory = admin.AdminCategory
+                AdminId = adminDto.AdminId,
+                AdminName = adminDto.AdminName,
+                AdminEmail = adminDto.AdminEmail,
+                AdminPhone = adminDto.AdminPhone,
+                AdminCategory = adminDto.AdminCategory
             };
             _context.Entry(addadmin).State = EntityState.Modified;
             try
@@ -90,7 +92,7 @@ namespace CoreEntityFramework.Services
             catch (DbUpdateConcurrencyException)
             {
                 serviceResponse.Status = ServiceResponse.ServiceStatus.Error;
-                serviceResponse.Messages.Add("Admin Already Exists");
+                serviceResponse.Messages.Add("An Error Occured");
                 return serviceResponse;
             }
             serviceResponse.Status = ServiceResponse.ServiceStatus.Updated;

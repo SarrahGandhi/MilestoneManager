@@ -18,8 +18,6 @@ public class EventTask
     [ForeignKey("Event")]
     public int EventId { get; set; }
     [ForeignKey("Admin")]
-
-
     public int AdminId { get; set; }
     [DefaultValue(false)]
     public bool IsCompleted { get; set; }

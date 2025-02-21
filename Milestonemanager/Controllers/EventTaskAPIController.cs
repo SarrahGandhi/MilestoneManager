@@ -103,6 +103,19 @@ namespace MilestoneManager.Controllers
                 return Ok(eventTasks);
             }
         }
+        [HttpGet("GetEventTasksByAdminId/{id}")]
+        public async Task<ActionResult<List<EventTask>>> GetEventTasksByAdminId(int id)
+        {
+            var eventTasks = await _eventTaskService.GetEventTasksByAdminId(id);
+            if (eventTasks == null || !eventTasks.Any())
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(eventTasks);
+            }
+        }
 
         /// <summary>
         /// Adds a new event task to the system.

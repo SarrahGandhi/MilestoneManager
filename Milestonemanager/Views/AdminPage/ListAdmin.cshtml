@@ -6,7 +6,7 @@
 <h1 class="page-title">List Admins</h1>
 
 <div class="button-container">
-    <a asp-action="CreateAdmin" class="btn">Create New</a>
+    <a asp-action="Create" class="btn">Create New</a>
 </div>
 
 
@@ -28,8 +28,9 @@
                     <td>@Html.DisplayFor(modelItem => item.AdminPhone)</td>
                     <td>@Html.DisplayFor(modelItem => item.AdminCategory)</td>
                     <td>
-                        <a asp-action="EditAdmin" asp-route-id="@item.AdminId" class="edit-btn">✏️</a>
-                        <a asp-action="DeleteAdmin" asp-route-id="@item.AdminId" class="delete-btn">🗑</a>
+                        <a asp-action="Edit" asp-route-id="@item.AdminId" class="edit-btn">✏️</a>
+                        <a asp-action="Delete" asp-route-id="@item.AdminId" class="delete-btn">🗑</a>
+                        <a asp-action="Details" asp-route-id="@item.AdminId" class="details-btn">📋</a>
                     </td>
                 </tr>
             }
