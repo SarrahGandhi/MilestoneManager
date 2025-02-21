@@ -1,0 +1,32 @@
+@model IEnumerable<Milestonemanager.Models.GuestDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Guest List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Invited</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var guest in Model)
+        {
+            <tr>
+                <td>@guest.GuestId</td>
+                <td>@guest.GuestName</td>
+                <td>@guest.GuestCategory</td>
+                <td>@(guest.IsInvited ? "Yes" : "No")</td>
+                <td><a asp-action="EditGuest" asp-route-id="@guest.GuestId" class="edit-btn">✏️</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-primary">Back to Home</a>

@@ -1,0 +1,138 @@
+@model IEnumerable<Milestonemanager.Models.AdminDto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="page-title">List Admins</h1>
+
+<div class="button-container">
+    <a asp-action="CreateAdmin" class="btn">Create New</a>
+</div>
+
+
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Admin Name</th>
+                <th>Phone</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AdminPhone)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AdminCategory)</td>
+                    <td>
+                        <a asp-action="EditAdmin" asp-route-id="@item.AdminId" class="edit-btn">✏️</a>
+                        <a asp-action="DeleteAdmin" asp-route-id="@item.AdminId" class="delete-btn">🗑</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background: #EFE5DC;
+    }
+
+    /* Table Container */
+    .table-container {
+        width: 100%;
+        max-width: 1000px;
+        /* Adjust width as needed */
+        margin: auto;
+        padding: 0px;
+        border-radius: 31px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        /* Ensures border-radius applies properly */
+    }
+
+    /* Table Styling */
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        /* Prevents collapsing, allowing border-radius */
+        border-spacing: 0;
+        /* Removes extra space between thead & tbody */
+        border-radius: 31px;
+        overflow: hidden;
+        background: linear-gradient(153deg, #FBFEFB 31.55%, #EFE5DC 98.87%);
+        opacity: 50;
+        padding: 5px;
+        font-size: 12px;
+
+
+    }
+
+    /* Table Header */
+    .styled-table thead th {
+        color: rgb(0, 0, 0);
+        padding: 12px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    /* Ensuring thead corners are rounded */
+    .styled-table thead tr:first-child th:first-child {
+        border-top-left-radius: 31px;
+    }
+
+    .styled-table thead tr:first-child th:last-child {
+        border-top-right-radius: 31px;
+
+    }
+
+
+    .styled-table tbody tr:hover {
+        background: linear-gradient(to right, #F3E7DB, #DFC3AE);
+        transition: 0.3s;
+    }
+
+    /* Cell Styling */
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Remove bottom border from the last row */
+    .styled-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Ensuring tbody corners are rounded */
+    .styled-table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 31px;
+    }
+
+    .styled-table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 31px;
+    }
+
+    /* Edit & Delete Button Styling */
+    .action-icons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-icons a {
+        text-decoration: none;
+        color: white;
+        background: #B08B6F;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+    .action-icons a:hover {
+        background: #DFC3AE;
+    }
+</style>

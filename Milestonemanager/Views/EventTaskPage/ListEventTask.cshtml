@@ -1,0 +1,46 @@
+@model IEnumerable<Milestonemanager.Models.EventTaskDto>
+  @{ ViewData["Title"] = "Event Tasks List"; }
+
+  <h2>Event Tasks</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Description</th>
+        <th>Event ID</th>
+        <th>Due Date</th>
+        <th>Completed</th>
+        <th>Category</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var task in Model) {
+      <tr>
+        <td>@task.TaskDescription</td>
+        <td>@task.EventId</td>
+        <td>@task.DueDate.ToShortDateString()</td>
+        <td>@(task.IsCompleted ? "Yes" : "No")</td>
+        <td>@task.EventTaskCategory</td>
+        <td>
+          <a
+            asp-action="EditEventTask"
+            asp-route-id="@task.EventId"
+            class="btn btn-primary"
+            >Edit</a
+          >
+          <a
+            asp-action="DeleteEventTask"
+            asp-route-id="@task.EventId"
+            class="btn btn-danger"
+            onclick="return confirm('Are you sure?')"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  <a asp-action="CreateEventTask" class="btn btn-success">Add New Task</a>
+</Milestonemanager.Models.EventTaskDto>

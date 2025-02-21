@@ -1,0 +1,50 @@
+@model GuestDto
+
+@{
+    ViewData["Title"] = "Edit Guest";
+}
+
+<h2>Edit Guest</h2>
+
+<form asp-action="EditGuest" method="post">
+    <input type="hidden" asp-for="GuestId" />
+
+    <div class="form-group">
+        <label asp-for="GuestName" class="control-label"></label>
+        <input asp-for="GuestName" class="form-control" />
+        <span asp-validation-for="GuestName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GuestLocation" class="control-label"></label>
+        <input asp-for="GuestLocation" class="form-control" />
+        <span asp-validation-for="GuestLocation" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GuestPhone" class="control-label"></label>
+        <input asp-for="GuestPhone" class="form-control" />
+        <span asp-validation-for="GuestPhone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GuestCategory" class="control-label"></label>
+        <input asp-for="GuestCategory" class="form-control" />
+        <span asp-validation-for="GuestCategory" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="IsInvited" class="control-label"></label>
+        <input asp-for="IsInvited" type="checkbox" />
+        <span asp-validation-for="IsInvited" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="ListGuest" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
