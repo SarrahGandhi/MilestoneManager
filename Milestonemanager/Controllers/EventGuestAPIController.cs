@@ -8,15 +8,27 @@ using System.Threading.Tasks;
 
 namespace MilestoneManager.Controllers
 {
+    /// <summary>
+    /// API Controller for managing Event Guests.
+    /// Provides endpoints for retrieving, adding, updating, and deleting event guests.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class EventGuestController : ControllerBase
     {
         private readonly IEventGuestService _eventGuestService;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventGuestController"/> class.
+        /// </summary>
+        /// <param name="eventGuestService">Service for managing event guests.</param>
         public EventGuestController(IEventGuestService eventGuestService)
         {
             _eventGuestService = eventGuestService;
         }
+        /// <summary>
+        /// Retrieves all event guests.
+        /// </summary>
+        /// <returns>A list of event guests.</returns>
         [HttpGet("EventGuest")]
         public async Task<ActionResult<IEnumerable<EventGuest>>> GetEventGuests()
 
@@ -24,6 +36,11 @@ namespace MilestoneManager.Controllers
             IEnumerable<EventGuest> eventGuest = await _eventGuestService.GetEventGuests();
             return Ok(eventGuest);
         }
+        /// <summary>
+        /// Adds a new event guest.
+        /// </summary>
+        /// <param name="eventGuest">DTO containing event guest details.</param>
+        /// <returns>The created event guest along with its location.</returns>
         [HttpPost("AddEventGuest")]
         public async Task<ActionResult<EventGuestDto>> AddEventGuest(EventGuestDto eventGuest)
         {
@@ -39,6 +56,13 @@ namespace MilestoneManager.Controllers
             eventGuest.GuestEventId = response.CreatedId;
             return Created($"/api/EventGuest/GetEventGuestById/{response.CreatedId}", eventGuest);
         }
+        /// <summary>
+        /// Updates an existing event guest.
+        /// </summary>
+        /// <param name="id">The ID of the event guest to update.</param>
+        /// <param name="eventGuest">Updated event guest details.</param>
+        /// <returns>No content if update is successful, otherwise appropriate error response.</returns>
+
 
         [HttpPut("UpdateEventGuest/{id}")]
         public async Task<ActionResult<EventGuest>> UpdateEventGuest(int id, EventGuestDto eventGuest)
@@ -58,6 +82,12 @@ namespace MilestoneManager.Controllers
             }
             return NoContent();
         }
+        /// <summary>
+        /// Deletes an event guest by ID.
+        /// </summary>
+        /// <param name="id">The ID of the event guest to delete.</param>
+        /// <returns>OK response with confirmation message or an appropriate error response.</returns>
+
         [HttpDelete("DeleteAdmin/{id}")]
         public async Task<ActionResult<EventGuest>> DeleteEventGuest(int id)
         {
