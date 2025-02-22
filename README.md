@@ -72,5 +72,5 @@ This project is licensed under the **MIT License**.
 ## Contact
 - **Developer**: Sarrah Gandhi
 - **Portfolio**: [www.sarrahgandhi.com](https://www.sarrahgandhi.com)
-- **Email**: your.email@example.com
+- **Email**: thesarrahgandhi@gmail.com
 
