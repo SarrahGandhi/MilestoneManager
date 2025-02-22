@@ -42,3 +42,15 @@ public class EventTaskDto
     public bool IsCompleted { get; set; }
     public EventTaskCategory EventTaskCategory { get; set; }
 }
+public class EventTaskListDto
+{
+    public int TaskId { get; set; }
+    public string TaskName { get; set; }
+
+    public string AdminName { get; set; }
+    public string EventName { get; set; }
+    public string TaskDescription { get; set; }
+    public DateTime DueDate { get; set; }
+    public bool IsCompleted { get; set; }
+    public EventTaskCategory EventTaskCategory { get; set; }
+}

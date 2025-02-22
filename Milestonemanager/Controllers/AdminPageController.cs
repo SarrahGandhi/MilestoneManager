@@ -45,11 +45,6 @@ namespace Milestonemanager.Controllers
             ViewData["Tasks"] = tasks;
             ViewData["AdminName"] = admin.AdminName;
             return View();
-
-
-
-
-
         }
 
         // Show the form to create a new admin
@@ -58,7 +53,6 @@ namespace Milestonemanager.Controllers
         {
             return View();
         }
-
         // Handle the creation of a new admin
         [HttpPost]
         [ValidateAntiForgeryToken]

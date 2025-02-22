@@ -1,0 +1,33 @@
+@model IEnumerable<Milestonemanager.Models.EventGuestDto>
+@{
+    var GuestName = ViewData["GuestName"] as String;
+    var EventGuest = ViewData["EventGuest"] as List<EventGuest>;
+}
+<h1 class="page-title">List Event Guest</h1>
+<div class="button-container">
+    <a asp-action="Create" class="btn">Create New</a>
+</div>
+<h1>@GuestName</h1>
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+
+                <th>Men Invited</th>
+                <th>Women Invited</th>
+                <th>Kids Invited</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in EventGuest)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.EventWomen)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EventMen)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EventKids)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

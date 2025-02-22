@@ -39,6 +39,7 @@ namespace CoreEntityFramework.Services
             }
             EventDto events = new EventDto()
             {
+                EventId = event1.EventId,
                 EventName = event1.EventName,
                 EventLocation = event1.EventLocation,
                 EventDate = event1.EventDate,
@@ -55,6 +56,7 @@ namespace CoreEntityFramework.Services
             }
             EventDto events = new EventDto()
             {
+                EventId = event1.EventId,
                 EventName = event1.EventName,
                 EventLocation = event1.EventLocation,
                 EventDate = event1.EventDate,
@@ -82,6 +84,7 @@ namespace CoreEntityFramework.Services
             ServiceResponse serviceResponse = new ServiceResponse();
             Event event1 = new Event()
             {
+                EventId = eventDto.EventId,
                 EventName = eventDto.EventName,
                 EventLocation = eventDto.EventLocation,
                 EventDate = eventDto.EventDate,
@@ -101,11 +104,12 @@ namespace CoreEntityFramework.Services
             serviceResponse.CreatedId = event1.EventId;
             return serviceResponse;
         }
-        public async Task<ServiceResponse> UpdateEvent(Event event1)
+        public async Task<ServiceResponse> UpdateEvent(EventDto event1)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
             Event addEvent = new Event()
             {
+                EventId = event1.EventId,
                 EventName = event1.EventName,
                 EventLocation = event1.EventLocation,
                 EventDate = event1.EventDate,

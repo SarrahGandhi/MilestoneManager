@@ -12,7 +12,7 @@ namespace MilestoneManager.Interfaces
         Task<List<Event>> GetEventsByDate(DateTime date);
         Task<List<Event>> GetEventsByLocation(string location);
         Task<ServiceResponse> AddEvent(EventDto eventDto);
-        Task<ServiceResponse> UpdateEvent(Event event1);
+        Task<ServiceResponse> UpdateEvent(EventDto event1);
         Task<ServiceResponse> DeleteEvent(int id);
 
     }

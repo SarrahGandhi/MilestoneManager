@@ -116,6 +116,21 @@ namespace MilestoneManager.Controllers
                 return Ok(eventTasks);
             }
         }
+        [HttpGet("GetEventTasksByEventId/{id}")]
+        public async Task<ActionResult<List<EventTask>>> GetEventTasksByEventId(int id)
+        {
+            var eventTasks = await _eventTaskService.GetEventTasksByEventId(id);
+            if (eventTasks == null || !eventTasks.Any())
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(eventTasks);
+            }
+        }
+
+
 
         /// <summary>
         /// Adds a new event task to the system.
@@ -144,7 +159,7 @@ namespace MilestoneManager.Controllers
         /// If the update is successful, an HTTP 204 No Content response is returned.
         /// </summary>
         [HttpPut("UpdateEventTask/{id}")]
-        public async Task<ActionResult<EventTask>> UpdateEventTask(int id, EventTask updateeventtask)
+        public async Task<ActionResult<EventTask>> UpdateEventTask(int id, EventTaskDto updateeventtask)
         {
             if (id != updateeventtask.TaskId)
             {

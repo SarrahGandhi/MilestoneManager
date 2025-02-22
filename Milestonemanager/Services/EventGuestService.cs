@@ -1,8 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using Milestonemanager.Data;
-using Milestonemanager.Models;
-using MilestoneManager.Interfaces;
+using System;
 using MilestoneManager.Models;
+using Milestonemanager.Models;
+using Microsoft.EntityFrameworkCore;
+using MilestoneManager.Interfaces;
+
 namespace CoreEntityFramework.Services
 {
     public class EventGuestService : IEventGuestService
@@ -115,7 +117,9 @@ namespace CoreEntityFramework.Services
                 EventId = eventGuestDto.EventId,
                 EventMen = eventGuestDto.EventMen,
                 EventWomen = eventGuestDto.EventWomen,
-                EventKids = eventGuestDto.EventKids
+                EventKids = eventGuestDto.EventKids,
+                GuestId = eventGuestDto.GuestId,
+                IsRSVPAccepted = eventGuestDto.IsRSVPAccepted
             };
             try
             {
@@ -131,7 +135,7 @@ namespace CoreEntityFramework.Services
             serviceResponse.CreatedId = eventGuest.GuestEventId;
             return serviceResponse;
         }
-        public async Task<ServiceResponse> UpdateEventGuest(EventGuest eventGuest)
+        public async Task<ServiceResponse> UpdateEventGuest(EventGuestDto eventGuest)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
             EventGuest addEventGuest = new EventGuest()

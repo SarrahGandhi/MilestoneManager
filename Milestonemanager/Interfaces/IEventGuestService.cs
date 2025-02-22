@@ -13,7 +13,7 @@ namespace MilestoneManager.Interfaces
         Task<List<EventGuest>> GetEventGuestsByEventWomen(int eventWomen);
         Task<List<EventGuest>> GetEventGuestsByEventKids(int eventKids);
         Task<ServiceResponse> AddEventGuest(EventGuestDto eventGuestDto);
-        Task<ServiceResponse> UpdateEventGuest(EventGuest eventGuest);
+        Task<ServiceResponse> UpdateEventGuest(EventGuestDto eventGuest);
         Task<ServiceResponse> DeleteEventGuest(int id);
     }
 }

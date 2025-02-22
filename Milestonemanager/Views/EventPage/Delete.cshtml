@@ -12,8 +12,10 @@
     <p>Location: @Model.EventLocation</p>
     <p>Category: @Model.EventCategory</p>
 
-    <form asp-action="DeleteEvent" asp-route-id="@Model.EventId" method="post">
-        <button type="submit" class="btn btn-danger">Confirm Delete</button>
-        <a asp-action="ListEvent" class="btn btn-secondary">Cancel</a>
+    <form asp-action="DeleteEvent" asp-route-id="@Model.EventId">
+        <input type="hidden" asp-for="EventId" />
+        <input type="submit" value="Delete" class="btm btn-danger" />
+        <a asp-action="ListEvent">Back to List</a>
     </form>
+
 </div>

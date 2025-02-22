@@ -22,6 +22,7 @@ namespace CoreEntityFramework.Services
                 eventTaskList.Add(new EventTask()
                 {
                     TaskId = eventTask.TaskId,
+                    TaskName = eventTask.TaskName,
                     TaskDescription = eventTask.TaskDescription,
                     DueDate = eventTask.DueDate,
                     EventId = eventTask.EventId,
@@ -41,6 +42,8 @@ namespace CoreEntityFramework.Services
             }
             EventTaskDto eventTasks = new EventTaskDto()
             {
+                TaskId = eventTask.TaskId,
+                TaskName = eventTask.TaskName,
                 TaskDescription = eventTask.TaskDescription,
                 DueDate = eventTask.DueDate,
                 EventId = eventTask.EventId,
@@ -59,6 +62,8 @@ namespace CoreEntityFramework.Services
             }
             EventTaskDto eventTasks = new EventTaskDto()
             {
+                TaskId = eventTask.TaskId,
+                TaskName = eventTask.TaskName,
                 TaskDescription = eventTask.TaskDescription,
                 DueDate = eventTask.DueDate,
                 EventId = eventTask.EventId,
@@ -80,7 +85,7 @@ namespace CoreEntityFramework.Services
                                  .Where(e => e.IsCompleted == completed)
                                  .ToListAsync();
         }
-        public async Task<List<EventTask>> GetEventTasksByEvent(int eventId)
+        public async Task<List<EventTask>> GetEventTasksByEventId(int eventId)
         {
             return await _context.EventTasks
                                  .Where(e => e.EventId == eventId)
@@ -102,10 +107,12 @@ namespace CoreEntityFramework.Services
             ServiceResponse serviceResponse = new ServiceResponse();
             EventTask eventTask = new EventTask()
             {
+                TaskId = eventTaskDto.TaskId,
+                TaskName = eventTaskDto.TaskName,
                 TaskDescription = eventTaskDto.TaskDescription,
-                DueDate = eventTaskDto.DueDate,
                 EventId = eventTaskDto.EventId,
                 AdminId = eventTaskDto.AdminId,
+                DueDate = eventTaskDto.DueDate,
                 IsCompleted = eventTaskDto.IsCompleted,
                 EventTaskCategory = eventTaskDto.EventTaskCategory
             };
@@ -123,11 +130,13 @@ namespace CoreEntityFramework.Services
             serviceResponse.CreatedId = eventTask.TaskId;
             return serviceResponse;
         }
-        public async Task<ServiceResponse> UpdateEventTask(EventTask eventTask)
+        public async Task<ServiceResponse> UpdateEventTask(EventTaskDto eventTask)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
             EventTask addEventTask = new EventTask()
             {
+                TaskId = eventTask.TaskId,
+                TaskName = eventTask.TaskName,
                 TaskDescription = eventTask.TaskDescription,
                 DueDate = eventTask.DueDate,
                 EventId = eventTask.EventId,

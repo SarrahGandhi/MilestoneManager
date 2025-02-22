@@ -126,7 +126,7 @@ namespace MilestoneManager.Controllers
         /// This ensures that modifications to guest details are properly validated and processed.
         /// </summary>
         [HttpPut("UpdateGuest/{id}")]
-        public async Task<ActionResult> UpdateGuest(int id, Guest updateguest)
+        public async Task<ActionResult> UpdateGuest(int id, GuestDto updateguest)
         {
             if (id != updateguest.GuestId)
             {

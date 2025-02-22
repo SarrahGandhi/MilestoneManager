@@ -8,6 +8,13 @@
 <div class="button-container">
     <a asp-action="Create" class="btn">Create New</a>
 </div>
+<form asp-action="Index" method="get">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" name="categoryFilter" asp-items="ViewBag.Categories" class="filter-dropdown">
+        <option value="">All Categories</option>
+    </select>
+    <button type="submit" class="filter-btn">Filter</button>
+</form>
 
 
 <div class="table-container">

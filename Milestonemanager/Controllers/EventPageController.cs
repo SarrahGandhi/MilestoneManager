@@ -1,20 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
-using MilestoneManager.Models;
-using MilestoneManager.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Milestonemanager.Interfaces;
 using Milestonemanager.Models;
+using MilestoneManager.Interfaces;
+using MilestoneManager.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MilestoneManager.Controllers
 {
     public class EventPageController : Controller
     {
         private readonly IEventService _eventService;
+        private readonly IEventTaskService _taskService;
 
-        public EventPageController(IEventService eventService)
+        public EventPageController(IEventService eventService, IEventTaskService taskService)
         {
             _eventService = eventService;
+            _taskService = taskService;
         }
 
         public IActionResult Index()
@@ -24,82 +26,109 @@ namespace MilestoneManager.Controllers
 
         public async Task<IActionResult> ListEvent()
         {
-            IEnumerable<Event> events = await _eventService.GetEvents();
-            IEnumerable<EventDto> eventDtos = events.Select(eventItem => new EventDto
-            {
-                EventName = eventItem.EventName,  // Fixed: Added commas
-                EventDate = eventItem.EventDate,
-                EventLocation = eventItem.EventLocation,
-                EventCategory = eventItem.EventCategory
-            });
-
-            return View(eventDtos);
-        }
-        public async Task<IActionResult> EditEvent(int id)
-        {
-            var eventItem = await _eventService.GetEventById(id);
-            if (eventItem == null)
-            {
-                return NotFound();
-            }
-
-            var eventDto = new EventDto
+            var events = await _eventService.GetEvents();
+            var eventDtos = events.Select(eventItem => new EventDto
             {
                 EventId = eventItem.EventId,
                 EventName = eventItem.EventName,
                 EventDate = eventItem.EventDate,
                 EventLocation = eventItem.EventLocation,
                 EventCategory = eventItem.EventCategory
-            };
+            });
+            return View(eventDtos);
 
+        }
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var tasks = await _taskService.GetEventTasksByEventId(id);
+            var event1 = await _eventService.GetEventById(id);
+            ViewData["EventName"] = event1.EventName;
+            ViewData["Tasks"] = tasks;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken()]
+        public async Task<IActionResult> CreateEvent(EventDto eventDto)
+        {
+            var response = await _eventService.AddEvent(eventDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Created)
+
+            {
+                return RedirectToAction("ListEvent", "EventPage");
+            }
+            else
+            {
+                return RedirectToAction("Create", "EventPage");
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var event1 = await _eventService.GetEventById(id);
+            if (event1 == null)
+            {
+                return NotFound();
+            }
+            var eventDto = new EventDto
+            {
+                EventId = id,
+                EventName = event1.EventName,
+                EventDate = event1.EventDate,
+                EventLocation = event1.EventLocation,
+                EventCategory = event1.EventCategory
+            };
             return View(eventDto);
         }
-
         [HttpPost]
-        public async Task<IActionResult> EditEvent(EventDto model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditEvent(EventDto eventDto)
         {
-            if (!ModelState.IsValid)
+            var response = await _eventService.UpdateEvent(eventDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Updated)
             {
-                return View(model);
+                return RedirectToAction("ListEvent", "EventPage");
             }
-
-            var updatedEvent = new Event
+            else
             {
-                EventId = model.EventId,
-                EventName = model.EventName,
-                EventDate = model.EventDate,
-                EventLocation = model.EventLocation,
-                EventCategory = model.EventCategory
-            };
-
-            await _eventService.UpdateEvent(updatedEvent);
-
-            return RedirectToAction("ListEvent");
+                return RedirectToAction("Edit", "EventPage");
+            }
         }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var event1 = await _eventService.GetEventById(id);
+            var eventDto = new EventDto
+            {
+                EventId = id,
+                EventName = event1.EventName,
+                EventDate = event1.EventDate,
+                EventLocation = event1.EventLocation,
+                EventCategory = event1.EventCategory
+            };
+            return View(eventDto);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteEvent(int id)
         {
-            var eventToDelete = await _eventService.GetEventById(id);
-            if (eventToDelete == null)
+            var response = await _eventService.DeleteEvent(id);
+            if (response.Status == ServiceResponse.ServiceStatus.Deleted)
             {
-                return NotFound();
+                return RedirectToAction("ListEvent", "EventPage");
             }
-
-            return View(eventToDelete); // This will open a confirmation view
+            else
+            {
+                return RedirectToAction("Delete", "EventPage");
+            }
         }
 
-        [HttpPost, ActionName("DeleteEvent")]
-        public async Task<IActionResult> ConfirmDelete(int id)
-        {
-            var eventToDelete = await _eventService.GetEventById(id);
-            if (eventToDelete == null)
-            {
-                return NotFound();
-            }
-
-            await _eventService.DeleteEvent(id);
-            return RedirectToAction(nameof(ListEvent));
-        }
 
     }
 }
-

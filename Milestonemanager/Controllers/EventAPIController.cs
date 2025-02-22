@@ -158,7 +158,7 @@ namespace MilestoneManager.Controllers
         /// Returns an HTTP 400, 404, or 500 response in case of errors.
         /// </summary>
         [HttpPut("UpdateEvent/{id}")]
-        public async Task<ActionResult> UpdateEvent(int id, Event updateevent)
+        public async Task<ActionResult> UpdateEvent(int id, EventDto updateevent)
         {
             if (id != updateevent.EventId)
             {

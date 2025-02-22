@@ -1,0 +1,92 @@
+@model Milestonemanager.Models.EventTaskDto
+
+@{
+    ViewData["Title"] = "Edit Event Task";
+    var admins = ViewData["Admins"] as List<Milestonemanager.Models.Admin>;
+    var events = ViewData["Events"] as List<Milestonemanager.Models.Event>;
+}
+
+<h2>Edit Event Task</h2>
+
+<form asp-action="EditEventTask" method="post">
+    <input type="hidden" asp-for="TaskId" />
+    <div class="form-group">
+        <label asp-for="TaskName" class="control-label"></label>
+        <input asp-for="TaskName" class="form-control" />
+        <span asp-validation-for="TaskName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TaskDescription" class="control-label"></label>
+        <input asp-for="TaskDescription" class="form-control" />
+        <span asp-validation-for="TaskDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DueDate" class="control-label"></label>
+        <input asp-for="DueDate" type="date" class="form-control" />
+        <span asp-validation-for="DueDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="IsCompleted" class="control-label"></label>
+        <select asp-for="IsCompleted" class="form-control">
+            <option value="true">Completed</option>
+            <option value="false">Pending</option>
+        </select>
+        <span asp-validation-for="IsCompleted" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTaskCategory" class="control-label"></label>
+        <select asp-for="EventTaskCategory" class="form-control" required>
+            <option value="">-- Select Role --</option>
+            <option value="Bride">Bride</option>
+            <option value="Groom">Groom</option>
+            <option value="Both">Both</option>
+
+        </select>
+        <span asp-validation-for="EventTaskCategory" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventId" class="control-label"></label>
+        <select asp-for="EventId" class="form-control" required>
+            <option value="">-- Select Role --</option>
+            @if (events != null)
+            {
+                foreach (var item in events)
+                {
+                    <option value="@item.EventId">@item.EventName</option>
+                }
+            }
+
+        </select>
+        <span asp-validation-for="EventId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AdminId" class="control-label"></label>
+        <select asp-for="AdminId" class="form-control" required>
+            <option value="">-- Select Role --</option>
+            @if (admins != null)
+            {
+                foreach (var item in admins)
+                {
+                    <option value="@item.AdminId">@item.AdminName</option>
+                }
+            }
+
+        </select>
+        <span asp-validation-for="AdminId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="ListEventTask" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

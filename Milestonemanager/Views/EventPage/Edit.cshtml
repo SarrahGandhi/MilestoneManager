@@ -1,0 +1,66 @@
+@model Milestonemanager.Models.EventDto
+
+@{
+    ViewData["Title"] = "EditEvent";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3" style="background-color: #f5e5dc;">
+                <div class="card-header text-center text-white" style="background-color: #c39685;">
+                    <h2 class="mb-0">Edit Event</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditEvent" method="post">
+                        <input type="hidden" asp-for="EventId" />
+
+                        <div class="mb-3">
+                            <label asp-for="EventName" class="form-label fw-bold text-dark"></label>
+                            <input asp-for="EventName" class="form-control"
+                                style="background-color: #f8ebe6; border: 1px solid #c39685;" required />
+                            <span asp-validation-for="EventName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EventDate" class="form-label fw-bold text-dark"></label>
+                            <input asp-for="EventDate" type="date" class="form-control"
+                                style="background-color: #f8ebe6; border: 1px solid #c39685;" required />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EventLocation" class="form-label fw-bold text-dark"></label>
+                            <input asp-for="EventLocation" class="form-control"
+                                style="background-color: #f8ebe6; border: 1px solid #c39685;" required />
+                            <span asp-validation-for="EventLocation" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EventCategory" class="form-label fw-bold text-dark"></label>
+                            <select asp-for="EventCategory" class="form-select"
+                                style="background-color: #f8ebe6; border: 1px solid #c39685;" required>
+                                <option value="">-- Select Side --</option>
+                                <option value="Bride">Bride</option>
+                                <option value="Groom">Groom</option>
+                                <option value="Both">Both</option>
+                            </select>
+                            <span asp-validation-for="EventCategory" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn text-white fw-bold" style="background-color: #a67c68;">Save
+                                Changes</button>
+                            <a asp-action="ListEvent" class="btn text-white fw-bold"
+                                style="background-color: #6d4c41;">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

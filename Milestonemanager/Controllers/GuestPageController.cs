@@ -1,88 +1,147 @@
 using Microsoft.AspNetCore.Mvc;
+using Milestonemanager.Interfaces;
+using Milestonemanager.Models;
 using MilestoneManager.Interfaces;
 using MilestoneManager.Models;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Milestonemanager.Models;
+using System.Threading.Tasks;
 
 namespace MilestoneManager.Controllers
 {
     public class GuestPageController : Controller
+
     {
-        private readonly IGuestService _guestService; // Inject the service
-        public GuestPageController(IGuestService guestService) // Constructor
+        private readonly IGuestService _guestService;
+        private readonly IEventGuestService _eventGuestService;
+        public GuestPageController(IGuestService guestService, IEventGuestService eventGuestService)
         {
-            _guestService = guestService; // Assign the service to the controller
-
-        }
-        public IActionResult Index()
-        {
-            return RedirectToAction("ListGuest");
-        }
-        public async Task<IActionResult> ListGuest()
-        {
-            IEnumerable<Guest> guests = await _guestService.GetGuests();
-            IEnumerable<GuestDto> guestDtos = guests.Select(guest => new GuestDto // Convert Guest to GuestDto
-            {
-                GuestId = guest.GuestId, // Ensure GuestId is included for editing
-                GuestName = guest.GuestName,
-                GuestCategory = guest.GuestCategory,
-                IsInvited = guest.IsInvited
-            });
-
-            return View(guestDtos);
+            _guestService = guestService;
+            _eventGuestService = eventGuestService;
         }
         [HttpGet]
-        public async Task<IActionResult> EditGuest(int id)
+        public async Task<IActionResult> ListGuest()
         {
-            var guest = await _guestService.GetGuestById(id); // Get Guest entity
-            if (guest == null) // If the guest doesn't exist
-            {
-                return NotFound();
-            }
-
-            // Convert Guest to GuestDto
-            var guestDto = new GuestDto
+            var guest = await _guestService.GetGuests();
+            var guestDtos = guest.Select(guest => new GuestDto()
             {
                 GuestId = guest.GuestId,
                 GuestName = guest.GuestName,
+
+                GuestPhone = guest.GuestPhone,
+                GuestAddress = guest.GuestAddress,
                 GuestLocation = guest.GuestLocation,
                 IsInvited = guest.IsInvited,
+                GuestNotes = guest.GuestNotes,
+                GuestCategory = guest.GuestCategory,
+
+
+
+
+            }).ToList();
+            return View(guestDtos);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var eventGuest = await _eventGuestService.GetEventGuestByEvent(id);
+            var guest = await _guestService.GetGuestById(id);
+            ViewData["EventGuest"] = eventGuest;
+            ViewData["GuestName"] = guest.GuestName;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> CreateGuest(GuestDto guestDto)
+        {
+            var response = await _guestService.AddGuest(guestDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Created)
+            {
+                return RedirectToAction("ListGuest", "GuestPage");
+            }
+            else
+            {
+                return RedirectToAction("Create", "GuestPage");
+            }
+
+        }
+        // Show the edit form for an guest
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var guest = await _guestService.GetGuestById(id);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+            var guestDto = new GuestDto()
+            {
+                GuestId = id,
+                GuestName = guest.GuestName,
                 GuestPhone = guest.GuestPhone,
+                GuestAddress = guest.GuestAddress,
+                GuestLocation = guest.GuestLocation,
+                IsInvited = guest.IsInvited,
+                GuestNotes = guest.GuestNotes,
                 GuestCategory = guest.GuestCategory
             };
+            return View(guestDto);
+        }
+        // Handle the update of an guest
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGuest(GuestDto guestDto)
+        {
+            var response = await _guestService.UpdateGuest(guestDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Updated)
+            {
+                return RedirectToAction("ListGuest", "GuestPage");
+            }
+            else
+            {
+                return RedirectToAction("Edit", "GuestPage");
+            }
 
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var guest = await _guestService.GetGuestById(id);
+            var guestDto = new GuestDto()
+            {
+                GuestId = id,
+                GuestName = guest.GuestName,
+                GuestAddress = guest.GuestAddress,
+                GuestLocation = guest.GuestLocation,
+                GuestPhone = guest.GuestPhone,
+                GuestNotes = guest.GuestNotes,
+                IsInvited = guest.IsInvited,
+                GuestCategory = guest.GuestCategory,
+
+
+
+            };
             return View(guestDto);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditGuest(GuestDto model)
+        public async Task<IActionResult> DeleteGuest(int id)
         {
-            if (!ModelState.IsValid)
+            var response = await _guestService.DeleteGuest(id);
+            if (response.Status == ServiceResponse.ServiceStatus.Deleted)
             {
-                return View(model);
+                return RedirectToAction("ListGuest", "GuestPage");
             }
-
-            var updatedGuest = new Guest
+            else
             {
-                GuestId = model.GuestId,
-                GuestName = model.GuestName,
-                GuestLocation = model.GuestLocation,
-                IsInvited = model.IsInvited,
-                GuestPhone = model.GuestPhone,
-                GuestCategory = model.GuestCategory
-            };
-
-            var result = await _guestService.UpdateGuest(updatedGuest);
-
-            if (result.Success) // Assuming UpdateGuest returns a ServiceResponse
-            {
-                return RedirectToAction("ListGuest");
+                return RedirectToAction("Delete", "GuestPage");
             }
-
-            ModelState.AddModelError("", "Failed to update guest. Please try again.");
-            return View(model);
         }
     }
 }

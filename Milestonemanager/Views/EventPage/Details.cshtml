@@ -1,0 +1,42 @@
+@model IEnumerable<Milestonemanager.Models.AdminDto>
+@{
+    var EventName = ViewData["EventName"] as String;
+    var EventTask = ViewData["Tasks"] as List<EventTask>;
+}
+<h1 class="page-title">List Events</h1>
+
+<div class="button-container">
+    <a asp-action="Create" class="btn">Create New</a>
+</div>
+<h1>@EventName</h1>
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+
+                <th>Task Name</th>
+                <th>Task Description</th>
+                <th>Due Date</th>
+                <th>Task Completed</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in EventTask)
+            {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.TaskName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TaskDescription)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DueDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IsCompleted)</td>
+
+
+                    </tr>
+            }
+
+        </tbody>
+    </table>
+    <a asp-action="ListEvent" class="btn btn-secondary mt-3">Back to List</a>
+</div>

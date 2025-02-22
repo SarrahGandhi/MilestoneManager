@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using Milestonemanager.Data;
-using Milestonemanager.Models;
-using MilestoneManager.Interfaces;
+using System;
 using MilestoneManager.Models;
-
+using Milestonemanager.Models;
+using Microsoft.EntityFrameworkCore;
+using MilestoneManager.Interfaces;
 namespace CoreEntityFramework.Services
 {
     public class GuestService : IGuestService
@@ -99,11 +99,12 @@ namespace CoreEntityFramework.Services
             serviceResponse.CreatedId = guest.GuestId;
             return serviceResponse;
         }
-        public async Task<ServiceResponse> UpdateGuest(Guest guest)
+        public async Task<ServiceResponse> UpdateGuest(GuestDto guest)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
             Guest addguest = new Guest()
             {
+                GuestId = guest.GuestId,
                 GuestName = guest.GuestName,
                 GuestLocation = guest.GuestLocation,
                 GuestPhone = guest.GuestPhone,

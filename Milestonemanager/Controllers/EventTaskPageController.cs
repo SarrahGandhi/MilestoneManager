@@ -1,105 +1,158 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using Milestonemanager.Interfaces;
 using Milestonemanager.Models;
 using MilestoneManager.Interfaces;
-using System.Threading.Tasks;
+using MilestoneManager.Models;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+
 
 namespace MilestoneManager.Controllers
 {
     public class EventTaskPageController : Controller
     {
         private readonly IEventTaskService _eventTaskService;
+        private readonly IAdminService _adminService;
+        private readonly IEventService _eventService;
 
-        public EventTaskPageController(IEventTaskService eventTaskService)
+        public EventTaskPageController(IEventTaskService eventTaskService, IAdminService adminService, IEventService eventService)
         {
             _eventTaskService = eventTaskService;
+            _adminService = adminService;
+            _eventService = eventService;
         }
-
-        public IActionResult Index()
-        {
-            return RedirectToAction("ListEventTask");
-        }
-
+        [HttpGet]
         public async Task<IActionResult> ListEventTask()
         {
-            IEnumerable<EventTask> eventTasks = await _eventTaskService.GetEventTasks();
-            IEnumerable<EventTaskDto> eventTaskDtos = eventTasks.Select(eventTask => new EventTaskDto
+            var tasks = await _eventTaskService.GetEventTasks();
+            var admin = await _adminService.GetAdmins();
+            var eventList = await _eventService.GetEvents();
+            var taskDtos = tasks.Select(task => new EventTaskListDto
             {
-                TaskId = eventTask.TaskId,
-                TaskDescription = eventTask.TaskDescription,
-                EventId = eventTask.EventId,
-                DueDate = eventTask.DueDate,
-                IsCompleted = eventTask.IsCompleted,
-                EventTaskCategory = eventTask.EventTaskCategory
-            });
 
-            return View(eventTaskDtos);
+                TaskId = task.TaskId,
+                TaskName = task.TaskName,
+                AdminName = admin.FirstOrDefault(item => item.AdminId == task.AdminId)?.AdminName ?? "No Admin Assigned",
+                EventName = eventList.FirstOrDefault(item => item.EventId == task.EventId)?.EventName ?? "No Event Assigned",
+                TaskDescription = task.TaskDescription,
+                DueDate = task.DueDate,
+                IsCompleted = task.IsCompleted,
+                EventTaskCategory = task.EventTaskCategory
+            }).ToList();
+
+
+            return View(taskDtos);
         }
-
+        // [HttpGet]
+        // public async Task<IActionResult>Details(int id)
+        // {
+        //     var task = await _eventTaskService.GetEventTaskById(id);
+        //     var admin = await _adminService.Get();
+        //     ViewData["AdminName"] = admin.AdminName;
         [HttpGet]
-        public async Task<IActionResult> EditEventTask(int id)
+        public async Task<IActionResult> Create()
         {
-            var eventTask = await _eventTaskService.GetEventTaskById(id);
-            if (eventTask == null)
+            var adminList = await _adminService.GetAdmins();
+            var eventList = await _eventService.GetEvents();
+
+            if (adminList == null || eventList == null)
             {
                 return NotFound();
             }
 
+
+            ViewData["Admins"] = adminList.ToList();
+            ViewData["Events"] = eventList.ToList();
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateEventTask(EventTaskDto eventTaskDto)
+        {
+            var response = await _eventTaskService.AddEventTask(eventTaskDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Created)
+            {
+                return RedirectToAction("ListEventTask", "EventTaskPage");
+            }
+            else
+            {
+                return RedirectToAction("Create", "EventTaskPage");
+            }
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var eventTask = await _eventTaskService.GetEventTaskById(id);
+            var adminList = await _adminService.GetAdmins();
+            var eventList = await _eventService.GetEvents();
+
+            if (adminList == null || eventList == null || eventTask == null)
+            {
+                return NotFound();
+            }
+
+
+            ViewData["Admins"] = adminList.ToList();
+            ViewData["Events"] = eventList.ToList();
             var eventTaskDto = new EventTaskDto
             {
-                TaskId = eventTask.TaskId,
+                TaskId = id,
+                TaskName = eventTask.TaskName,
                 TaskDescription = eventTask.TaskDescription,
-                EventId = eventTask.EventId,
                 DueDate = eventTask.DueDate,
+                EventId = eventTask.EventId,
+                AdminId = eventTask.AdminId,
                 IsCompleted = eventTask.IsCompleted,
                 EventTaskCategory = eventTask.EventTaskCategory
             };
-
             return View(eventTaskDto);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditEventTask(EventTaskDto model)
+        public async Task<IActionResult> EditEventTask(EventTaskDto eventTaskDto)
         {
-            if (!ModelState.IsValid)
+            var response = await _eventTaskService.UpdateEventTask(eventTaskDto);
+            if (response.Status == ServiceResponse.ServiceStatus.Updated)
             {
-                return View(model);
+                return RedirectToAction("ListEventTask", "EventTaskPage");
             }
-
-            var updatedEventTask = new EventTask
+            else
             {
-                TaskId = model.TaskId,
-                TaskDescription = model.TaskDescription,
-                EventId = model.EventId,
-                DueDate = model.DueDate,
-                IsCompleted = model.IsCompleted,
-                EventTaskCategory = model.EventTaskCategory
-            };
-
-            var result = await _eventTaskService.UpdateEventTask(updatedEventTask);
-            if (result.Success)
-            {
-                return RedirectToAction("ListEventTask");
+                return RedirectToAction("Edit", "EventTaskPage");
             }
-
-            ModelState.AddModelError("", "Failed to update event task. Please try again.");
-            return View(model);
         }
-
+        public async Task<IActionResult> Delete(int id)
+        {
+            var eventTask = await _eventTaskService.GetEventTaskById(id);
+            var eventTaskDto = new EventTaskDto
+            {
+                TaskId = id,
+                TaskName = eventTask.TaskName,
+                TaskDescription = eventTask.TaskDescription,
+                DueDate = eventTask.DueDate,
+                EventId = eventTask.EventId,
+                AdminId = eventTask.AdminId,
+                IsCompleted = eventTask.IsCompleted,
+                EventTaskCategory = eventTask.EventTaskCategory
+            };
+            return View(eventTaskDto);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteEventTask(int id)
         {
-            var result = await _eventTaskService.DeleteEventTask(id);
-            if (result.Success)
+            var response = await _eventTaskService.DeleteEventTask(id);
+            if (response.Status == ServiceResponse.ServiceStatus.Deleted)
             {
-                return RedirectToAction("ListEventTask");
+                return RedirectToAction("ListEventTask", "EventTaskPage");
             }
-
-            ModelState.AddModelError("", "Failed to delete event task.");
-            return RedirectToAction("ListEventTask");
+            else
+            {
+                return RedirectToAction("Delete", "EventTaskPage");
+            }
         }
     }
 }
+

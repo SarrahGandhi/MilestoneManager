@@ -1,42 +1,141 @@
 @model Milestonemanager.Models.AdminDto
 
 @{
-    ViewData["Title"] = "CreateAdmin";
+    ViewData["Title"] = "Create Admin";
 }
 
-<h2>Create New Admin</h2>
+<style>
+    body {
+        background: linear-gradient(to right, #F3E7DB, #DFC3AE);
 
-<form asp-action="CreateAdmin" method="post">
-    <div class="form-group">
-        <label asp-for="AdminName" class="control-label"></label>
-        <input asp-for="AdminName" class="form-control" required />
-        <span asp-validation-for="AdminName" class="text-danger"></span>
-    </div>
+    }
 
-    <div class="form-group">
-        <label asp-for="AdminEmail" class="control-label"></label>
-        <input asp-for="AdminEmail" type="email" class="form-control" required />
-        <span asp-validation-for="AdminEmail" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="AdminPhone" class="control-label"></label>
-        <input asp-for="AdminPhone" type="tel" class="form-control" />
-        <span asp-validation-for="AdminPhone" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="AdminCategory" class="control-label"></label>
-        <select asp-for="AdminCategory" class="form-control" required>
-            <option value="">-- Select Role --</option>
-            <option value="SuperAdmin">Super Admin</option>
-            <option value="RegularAdmin">Regular Admin</option>
+    /* Main container styling */
+    .admin-form-container {
+        margin-top: 50px;
+    }
 
-        </select>
-        <span asp-validation-for="AdminCategory" class="text-danger"></span>
-    </div>
+    /* Card styling */
+    .admin-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+        background-color: #fff;
+    }
 
-    <button type="submit" class="btn btn-primary mt-3">Create Admin</button>
-    <a asp-action="ListAdmin" class="btn btn-secondary mt-3">Cancel</a>
-</form>
+    .admin-card:hover {
+        transform: scale(1.02);
+    }
+
+    /* Header with a pink gradient */
+    .admin-card-header {
+        background: #755b47;
+        /* Hot Pink & Deep Pink */
+        color: rgb(0, 0, 0);
+        text-align: center;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    /* Label and input styling */
+    .form-label {
+        font-weight: 600;
+        color: #B08B6F;
+        /* Soft pink */
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #B08B6F;
+        /* Soft pink border */
+        transition: 0.3s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #B08B6F;
+        /* Deep Pink focus */
+        box-shadow: 0 0 5px rgba(151, 151, 151, 0.5);
+    }
+
+    /* Button styles */
+    .btn-primary {
+        background-color: #B08B6F;
+        /* Hot Pink */
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #B08B6F;
+        /* Deep Pink */
+    }
+
+    .btn-outline-secondary {
+        border-radius: 8px;
+        padding: 10px;
+        color: #000000;
+        border: 1px solid #B08B6F;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #755b47;
+        color: white;
+    }
+</style>
+
+<div class="container admin-form-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card admin-card">
+                <div class="admin-card-header">
+                    Create New Admin
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateAdmin" method="post">
+                        <div class="mb-3">
+                            <label asp-for="AdminName" class="form-label"></label>
+                            <input asp-for="AdminName" class="form-control" required />
+                            <span asp-validation-for="AdminName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdminEmail" class="form-label"></label>
+                            <input asp-for="AdminEmail" type="email" class="form-control" required />
+                            <span asp-validation-for="AdminEmail" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdminPhone" class="form-label"></label>
+                            <input asp-for="AdminPhone" type="tel" class="form-control" />
+                            <span asp-validation-for="AdminPhone" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdminCategory" class="form-label"></label>
+                            <select asp-for="AdminCategory" class="form-select" required>
+                                <option value="">-- Select Role --</option>
+                                <option value="SuperAdmin">Super Admin</option>
+                                <option value="RegularAdmin">Regular Admin</option>
+                            </select>
+                            <span asp-validation-for="AdminCategory" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">Create Admin</button>
+                            <a asp-action="ListAdmin" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
