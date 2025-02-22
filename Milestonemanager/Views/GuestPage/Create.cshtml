@@ -1,4 +1,4 @@
-@model Milestonemanager.Models.GuestDto
+@model Milestonemanager.Models.Guest
 
 @{
     ViewData["Title"] = "CreateGuest";
@@ -55,12 +55,30 @@
         <div>
             @if (eventList != null)
             {
-                @foreach (var eventItem in eventList)
+                @for (int i = 0; i < eventList.Count; i++)
                 {
+                    var eventItem = eventList[i];
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="event_@eventItem.EventId" name="SelectedEventIds"
-                            value="@eventItem.EventId">
+                        <input type="checkbox" class="form-check-input" id="event_@eventItem.EventId"
+                            name="EventGuests[@i].EventId" value="@eventItem.EventId" />
                         <label class="form-check-label" for="event_@eventItem.EventId">@eventItem.EventName</label>
+
+
+                        <div>
+                            <label for="men_@eventItem.EventId">Men:</label>
+                            <input type="number" id="men_@eventItem.EventId" name="EventGuests[@i].EventMen" value="0"
+                                min="0" />
+                        </div>
+                        <div>
+                            <label for="women_@eventItem.EventId">Women:</label>
+                            <input type="number" id="women_@eventItem.EventId" name="EventGuests[@i].EventWomen" value="0"
+                                min="0" />
+                        </div>
+                        <div>
+                            <label for="kids_@eventItem.EventId">Kids:</label>
+                            <input type="number" id="kids_@eventItem.EventId" name="EventGuests[@i].EventKids" value="0"
+                                min="0" />
+                        </div>
                     </div>
                 }
             }

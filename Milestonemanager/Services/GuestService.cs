@@ -20,6 +20,8 @@ namespace CoreEntityFramework.Services
             List<Guest> guestlist = new List<Guest>();
             foreach (var guest in guests)
             {
+                ICollection<EventGuest> eventGuests = await _context.EventGuests.Where(e => e.GuestId == guest.GuestId).ToListAsync();
+
                 guestlist.Add(new Guest()
                 {
                     GuestId = guest.GuestId,
@@ -27,7 +29,8 @@ namespace CoreEntityFramework.Services
                     GuestLocation = guest.GuestLocation,
                     GuestPhone = guest.GuestPhone,
                     IsInvited = guest.IsInvited,
-                    GuestCategory = guest.GuestCategory
+                    GuestCategory = guest.GuestCategory,
+                    EventGuests = eventGuests
                 });
             }
             return guestlist;

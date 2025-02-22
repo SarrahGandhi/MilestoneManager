@@ -61,32 +61,40 @@ namespace MilestoneManager.Controllers
             ViewData["EventsList"] = eventList.ToList();
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> CreateGuest(GuestDto guestDto, List<int> SelectedEventIds)
+        public async Task<IActionResult> CreateGuest(Guest guest)
         {
+            var filteredEventGuests = guest.EventGuests.Where(eg => eg.EventId != 0).ToList();
 
+            GuestDto guestDto = new GuestDto()
+            {
+                GuestName = guest.GuestName,
+                GuestLocation = guest.GuestLocation,
+                GuestAddress = guest.GuestAddress,
+                GuestPhone = guest.GuestPhone,
+                IsInvited = guest.IsInvited,
+                GuestCategory = guest.GuestCategory,
+                GuestNotes = guest.GuestNotes
+            };
             var response = await _guestService.AddGuest(guestDto);
 
             if (response.Status == ServiceResponse.ServiceStatus.Created)
             {
-                foreach (var eventId in SelectedEventIds)
+                foreach (var eventGuest in filteredEventGuests)
                 {
                     var eventGuestDto = new EventGuestDto()
                     {
-                        EventId = eventId,
+                        EventId = eventGuest.EventId,
                         GuestId = response.CreatedId,
                         IsRSVPAccepted = false,
-                        EventMen = 0,
-                        EventWomen = 0,
-                        EventKids = 0
+                        EventMen = eventGuest.EventMen,
+                        EventWomen = eventGuest.EventWomen,
+                        EventKids = eventGuest.EventKids
                     };
 
                     var eventGuestResponse = await _eventGuestService.AddEventGuest(eventGuestDto);
-                    // if (eventGuestResponse.Status == ServiceResponse.ServiceStatus.Created)
-                    // {
-
 
                 }
                 return RedirectToAction("ListGuest", "GuestPage");
