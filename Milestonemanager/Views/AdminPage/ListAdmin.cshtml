@@ -8,13 +8,7 @@
 <div class="button-container">
     <a asp-action="Create" class="btn">Create New</a>
 </div>
-<form asp-action="Index" method="get">
-    <label for="categoryFilter">Filter by Category:</label>
-    <select id="categoryFilter" name="categoryFilter" asp-items="ViewBag.Categories" class="filter-dropdown">
-        <option value="">All Categories</option>
-    </select>
-    <button type="submit" class="filter-btn">Filter</button>
-</form>
+
 
 
 <div class="table-container">
@@ -35,9 +29,9 @@
                     <td>@Html.DisplayFor(modelItem => item.AdminPhone)</td>
                     <td>@Html.DisplayFor(modelItem => item.AdminCategory)</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.AdminId" class="edit-btn">✏️</a>
-                        <a asp-action="Delete" asp-route-id="@item.AdminId" class="delete-btn">🗑</a>
-                        <a asp-action="Details" asp-route-id="@item.AdminId" class="details-btn">📋</a>
+                        <a asp-action="Edit" asp-route-id="@item.AdminId" class="btn">✏️</a>
+                        <a asp-action="Delete" asp-route-id="@item.AdminId" class="btn">🗑</a>
+                        <a asp-action="Details" asp-route-id="@item.AdminId" class="btn">📋</a>
                     </td>
                 </tr>
             }
@@ -100,7 +94,7 @@
 
 
     .styled-table tbody tr:hover {
-        background: linear-gradient(to right, #F3E7DB, #DFC3AE);
+        background: linear-gradient(to right, #fff7ef, #ebdbce);
         transition: 0.3s;
     }
 
@@ -119,6 +113,16 @@
     /* Ensuring tbody corners are rounded */
     .styled-table tbody tr:last-child td:first-child {
         border-bottom-left-radius: 31px;
+    }
+
+    .btn {
+        padding: 10px;
+        background-color: #d9b497;
+
+    }
+
+    .btn:hover {
+        background-color: #B08B6F;
     }
 
     .styled-table tbody tr:last-child td:last-child {

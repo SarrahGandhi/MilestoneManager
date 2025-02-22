@@ -26,7 +26,6 @@ namespace MilestoneManager.Controllers
             {
                 GuestId = guest.GuestId,
                 GuestName = guest.GuestName,
-
                 GuestPhone = guest.GuestPhone,
                 GuestAddress = guest.GuestAddress,
                 GuestLocation = guest.GuestLocation,
@@ -61,6 +60,7 @@ namespace MilestoneManager.Controllers
         public async Task<IActionResult> CreateGuest(GuestDto guestDto)
         {
             var response = await _guestService.AddGuest(guestDto);
+
             if (response.Status == ServiceResponse.ServiceStatus.Created)
             {
                 return RedirectToAction("ListGuest", "GuestPage");

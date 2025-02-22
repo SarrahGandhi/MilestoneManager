@@ -4,41 +4,55 @@
     ViewData["Title"] = "CreateEvent";
 }
 
-<h2>Create New Event</h2>
+<div class="container admin-form-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card admin-card">
+                <div class="admin-card-header">
+                    Create New Event
+                </div>
+                <div class="card-body">
 
-<form asp-action="CreateEvent" method="post">
-    <div class="form-group">
-        <label asp-for="EventName" class="control-label"></label>
-        <input asp-for="EventName" class="form-control" required />
-        <span asp-validation-for="EventName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="EventDate" class="control-label"></label>
-        <input asp-for="EventDate" type="date" class="form-control" required />
-        <span asp-validation-for="EventDate" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="EventLocation" class="control-label"></label>
-        <input asp-for="EventLocation" class="form-control" required />
-        <span asp-validation-for="EventLocation" class="text-danger"></span>
+                    <form asp-action="CreateEvent" method="post">
+                        <div class="mb-3">
+                            <label asp-for="EventName" class="control-label"></label>
+                            <input asp-for="EventName" class="form-control" required />
+                            <span asp-validation-for="EventName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="EventDate" class="control-label"></label>
+                            <input asp-for="EventDate" type="date" class="form-control" required />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="EventLocation" class="control-label"></label>
+                            <input asp-for="EventLocation" class="form-control" required />
+                            <span asp-validation-for="EventLocation" class="text-danger"></span>
 
 
-        <div class="form-group">
-            <label asp-for="EventCategory" class="control-label"></label>
-            <select asp-for="EventCategory" class="form-control" required>
-                <option value="">-- Select Side --</option>
-                <option value="Bride">Bride</option>
-                <option value="Groom">Groom</option>
-                <option value="Both">Both</option>
+                            <div class="mb-3">
+                                <label asp-for="EventCategory" class="control-label"></label>
+                                <select asp-for="EventCategory" class="form-control" required>
+                                    <option value="">-- Select Side --</option>
+                                    <option value="Bride">Bride</option>
+                                    <option value="Groom">Groom</option>
+                                    <option value="Both">Both</option>
 
-            </select>
-            <span asp-validation-for="EventCategory" class="text-danger"></span>
+                                </select>
+                                <span asp-validation-for="EventCategory" class="text-danger"></span>
+                            </div>
+                            <div class="d-grid gap-2 mt-4">
+
+                                <button type="submit" class="btn btn-primary mt-3">Create Event</button>
+                                <a asp-action="ListEvent" class="btn btn-secondary mt-3">Cancel</a>
+                            </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Create Event</button>
-        <a asp-action="ListEvent" class="btn btn-secondary mt-3">Cancel</a>
-</form>
+    </div>
+</div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

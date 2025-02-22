@@ -36,8 +36,8 @@
           <td>@Html.DisplayFor(modelItem => item.EventTaskCategory)</td>
 
           <td>
-            <a asp-action="Edit" asp-route-id="@item.TaskId" class="edit-btn">✏️</a>
-            <a asp-action="Delete" asp-route-id="@item.TaskId" class="delete-btn">🗑</a>
+            <a asp-action="Edit" asp-route-id="@item.TaskId" class="btn">✏️</a>
+            <a asp-action="Delete" asp-route-id="@item.TaskId" class="btn">🗑</a>
 
           </td>
         </tr>
@@ -101,7 +101,7 @@
 
 
   .styled-table tbody tr:hover {
-    background: linear-gradient(to right, #F3E7DB, #DFC3AE);
+    background: linear-gradient(to right, #fff7ef, #ebdbce);
     transition: 0.3s;
   }
 
@@ -120,6 +120,16 @@
   /* Ensuring tbody corners are rounded */
   .styled-table tbody tr:last-child td:first-child {
     border-bottom-left-radius: 31px;
+  }
+
+  .btn {
+    padding: 10px;
+    background-color: #d9b497;
+
+  }
+
+  .btn:hover {
+    background-color: #B08B6F;
   }
 
   .styled-table tbody tr:last-child td:last-child {

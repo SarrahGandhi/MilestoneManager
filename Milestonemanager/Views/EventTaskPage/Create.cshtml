@@ -78,3 +78,87 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<style>
+    body {
+        background: linear-gradient(to right, #F3E7DB, #DFC3AE);
+
+    }
+
+    /* Main container styling */
+    .admin-form-container {
+        margin-top: 50px;
+    }
+
+    /* Card styling */
+    .admin-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+        background-color: #fff;
+    }
+
+    .admin-card:hover {
+        transform: scale(1.02);
+    }
+
+    /* Header with a pink gradient */
+    .admin-card-header {
+        background: #755b47;
+        /* Hot Pink & Deep Pink */
+        color: rgb(0, 0, 0);
+        text-align: center;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    /* Label and input styling */
+    .form-label {
+        font-weight: 600;
+        color: #B08B6F;
+        /* Soft pink */
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #B08B6F;
+        /* Soft pink border */
+        transition: 0.3s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #B08B6F;
+        /* Deep Pink focus */
+        box-shadow: 0 0 5px rgba(151, 151, 151, 0.5);
+    }
+
+    /* Button styles */
+    .btn-primary {
+        background-color: #B08B6F;
+        /* Hot Pink */
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #B08B6F;
+        /* Deep Pink */
+    }
+
+    .btn-outline-secondary {
+        border-radius: 8px;
+        padding: 10px;
+        color: #000000;
+        border: 1px solid #B08B6F;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #755b47;
+        color: white;
+    }
+</style>
