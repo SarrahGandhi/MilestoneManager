@@ -1,3 +1,4 @@
+using CoreEntityFramework.Services;
 using Microsoft.AspNetCore.Mvc;
 using Milestonemanager.Interfaces;
 using Milestonemanager.Models;
@@ -13,10 +14,12 @@ namespace MilestoneManager.Controllers
     {
         private readonly IGuestService _guestService;
         private readonly IEventGuestService _eventGuestService;
-        public GuestPageController(IGuestService guestService, IEventGuestService eventGuestService)
+        private readonly IEventService _eventService;
+        public GuestPageController(IGuestService guestService, IEventGuestService eventGuestService, IEventService eventService)
         {
             _guestService = guestService;
             _eventGuestService = eventGuestService;
+            _eventService = eventService;
         }
         [HttpGet]
         public async Task<IActionResult> ListGuest()
@@ -44,25 +47,48 @@ namespace MilestoneManager.Controllers
         {
             var eventGuest = await _eventGuestService.GetEventGuestByGuest(id);
             var guest = await _guestService.GetGuestById(id);
+            var eventList = await _eventService.GetEvents();
             ViewData["EventGuest"] = eventGuest;
             ViewData["GuestName"] = guest.GuestName;
+            ViewData["EventList"] = eventList.ToList();
             return View();
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var eventList = await _eventService.GetEvents();
+            ViewData["EventsList"] = eventList.ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> CreateGuest(GuestDto guestDto)
+        public async Task<IActionResult> CreateGuest(GuestDto guestDto, List<int> SelectedEventIds)
         {
+
             var response = await _guestService.AddGuest(guestDto);
 
             if (response.Status == ServiceResponse.ServiceStatus.Created)
             {
+                foreach (var eventId in SelectedEventIds)
+                {
+                    var eventGuestDto = new EventGuestDto()
+                    {
+                        EventId = eventId,
+                        GuestId = response.CreatedId,
+                        IsRSVPAccepted = false,
+                        EventMen = 0,
+                        EventWomen = 0,
+                        EventKids = 0
+                    };
+
+                    var eventGuestResponse = await _eventGuestService.AddEventGuest(eventGuestDto);
+                    // if (eventGuestResponse.Status == ServiceResponse.ServiceStatus.Created)
+                    // {
+
+
+                }
                 return RedirectToAction("ListGuest", "GuestPage");
             }
             else
