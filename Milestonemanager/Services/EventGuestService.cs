@@ -67,19 +67,17 @@ namespace CoreEntityFramework.Services
             };
             return eventGuests;
         }
-        public async Task<List<EventGuestDto>> GetEventGuestByGuest(int guestId)
+        public async Task<List<EventGuest>> GetEventGuestByGuest(int guestId)
         {
-            var eventGuests = await _context.EventGuests
-    .Where(x => x.GuestId == guestId)
-    .ToListAsync();
+            var eventGuests = await _context.EventGuests.Where(x => x.GuestId == guestId).ToListAsync();
             if (eventGuests == null)
             {
                 return null;
             }
-            List<EventGuestDto> eventGuestList = new List<EventGuestDto>();
+            List<EventGuest> eventGuestList = new List<EventGuest>();
             foreach (var eventGuest in eventGuests)
             {
-                eventGuestList.Add(new EventGuestDto()
+                eventGuestList.Add(new EventGuest()
                 {
                     GuestEventId = eventGuest.GuestEventId,
                     EventId = eventGuest.EventId,

@@ -110,11 +110,12 @@ namespace MilestoneManager.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var guest = await _guestService.GetGuestById(id);
+            var eventGuest = await _eventGuestService.GetEventGuestByGuest(id);
             if (guest == null)
             {
                 return NotFound();
             }
-            var guestDto = new GuestDto()
+            var guestDto = new Guest()
             {
                 GuestId = id,
                 GuestName = guest.GuestName,
@@ -123,7 +124,8 @@ namespace MilestoneManager.Controllers
                 GuestLocation = guest.GuestLocation,
                 IsInvited = guest.IsInvited,
                 GuestNotes = guest.GuestNotes,
-                GuestCategory = guest.GuestCategory
+                GuestCategory = guest.GuestCategory,
+                EventGuests = eventGuest
             };
             return View(guestDto);
         }

@@ -35,14 +35,14 @@ namespace CoreEntityFramework.Services
             }
             return guestlist;
         }
-        public async Task<GuestDto> GetGuestById(int id)
+        public async Task<Guest> GetGuestById(int id)
         {
             var guest = await _context.Guests.FindAsync(id);
             if (guest == null)
             {
                 return null;
             }
-            GuestDto guests = new GuestDto()
+            Guest guests = new Guest()
             {
                 GuestId = guest.GuestId,
                 GuestName = guest.GuestName,
