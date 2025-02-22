@@ -12,7 +12,7 @@ public class EventTask
     public string TaskName { get; set; }
     [StringLength(255)]
 
-    public string TaskDescription { get; set; }
+    public string? TaskDescription { get; set; }
 
     public DateTime DueDate { get; set; }
     [ForeignKey("Event")]

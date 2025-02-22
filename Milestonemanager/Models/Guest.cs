@@ -38,24 +38,13 @@ public enum GuestCategory
 }
 public class GuestDto
 {
-    public int GuestId { get; set; }
+    public int? GuestId { get; set; }
     public string GuestName { get; set; }
-    public string GuestLocation { get; set; }
-    public string GuestAddress { get; set; }
-    public string GuestPhone { get; set; }
+    public string? GuestLocation { get; set; }
+    public string? GuestAddress { get; set; }
+    public string? GuestPhone { get; set; }
     public bool IsInvited { get; set; }
-    public string GuestNotes { get; set; }
+    public string? GuestNotes { get; set; }
     public GuestCategory GuestCategory { get; set; }
 }
 
-public class GuestCreateDto
-{
-    public string GuestName { get; set; }
-    public string GuestLocation { get; set; }
-    public string GuestAddress { get; set; }
-    public string GuestPhone { get; set; }
-    public bool IsInvited { get; set; }
-    public string GuestNotes { get; set; }
-    public GuestCategory GuestCategory { get; set; }
-
-}

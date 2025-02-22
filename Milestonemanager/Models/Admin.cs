@@ -16,7 +16,7 @@ public class Admin
     [StringLength(15)]
 
 
-    public string AdminPhone { get; set; }
+    public string? AdminPhone { get; set; }
 
     [Required]
     public AdminCategory AdminCategory { get; set; }

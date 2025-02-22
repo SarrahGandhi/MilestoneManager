@@ -25,7 +25,6 @@ namespace MilestoneManager.Controllers
             return Ok(eventGuest);
         }
         [HttpPost("AddEventGuest")]
-
         public async Task<ActionResult<EventGuestDto>> AddEventGuest(EventGuestDto eventGuest)
         {
             ServiceResponse response = await _eventGuestService.AddEventGuest(eventGuest);
@@ -37,11 +36,17 @@ namespace MilestoneManager.Controllers
             {
                 return StatusCode(500, response.Messages);
             }
-            return Created($"/api/EventGuest/GetEventGuestById/{response.CreatedId}", AddEventGuest);
+            eventGuest.GuestEventId = response.CreatedId;
+            return Created($"/api/EventGuest/GetEventGuestById/{response.CreatedId}", eventGuest);
         }
+
         [HttpPut("UpdateEventGuest/{id}")]
-        public async Task<ActionResult<EventGuest>> UpdateEventGuest(EventGuestDto eventGuest, int id)
+        public async Task<ActionResult<EventGuest>> UpdateEventGuest(int id, EventGuestDto eventGuest)
         {
+            if (id != eventGuest.GuestEventId)
+            {
+                return BadRequest();
+            }
             ServiceResponse response = await _eventGuestService.UpdateEventGuest(eventGuest);
             if (response.Status == ServiceResponse.ServiceStatus.NotFound)
             {

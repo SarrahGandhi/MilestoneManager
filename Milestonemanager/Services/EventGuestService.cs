@@ -24,6 +24,7 @@ namespace CoreEntityFramework.Services
                 {
                     GuestEventId = eventGuest.GuestEventId,
                     EventId = eventGuest.EventId,
+                    GuestId = eventGuest.GuestId,
                     EventMen = eventGuest.EventMen,
                     EventWomen = eventGuest.EventWomen,
                     EventKids = eventGuest.EventKids
@@ -66,23 +67,30 @@ namespace CoreEntityFramework.Services
             };
             return eventGuests;
         }
-        public async Task<EventGuestDto> GetEventGuestByGuest(int guestId)
+        public async Task<List<EventGuestDto>> GetEventGuestByGuest(int guestId)
         {
-            var eventGuest = await _context.EventGuests.FirstOrDefaultAsync(x => x.GuestId == guestId);
-            if (eventGuest == null)
+            var eventGuests = await _context.EventGuests
+    .Where(x => x.GuestId == guestId)
+    .ToListAsync();
+            if (eventGuests == null)
             {
                 return null;
             }
-            EventGuestDto eventGuests = new EventGuestDto()
+            List<EventGuestDto> eventGuestList = new List<EventGuestDto>();
+            foreach (var eventGuest in eventGuests)
             {
-                EventId = eventGuest.EventId,
-                GuestId = eventGuest.GuestId,
-                IsRSVPAccepted = eventGuest.IsRSVPAccepted,
-                EventMen = eventGuest.EventMen,
-                EventWomen = eventGuest.EventWomen,
-                EventKids = eventGuest.EventKids
-            };
-            return eventGuests;
+                eventGuestList.Add(new EventGuestDto()
+                {
+                    GuestEventId = eventGuest.GuestEventId,
+                    EventId = eventGuest.EventId,
+                    GuestId = eventGuest.GuestId,
+                    EventMen = eventGuest.EventMen,
+                    EventWomen = eventGuest.EventWomen,
+                    EventKids = eventGuest.EventKids
+                });
+
+            }
+            return eventGuestList;
         }
         public async Task<List<EventGuest>> GetEventGuestsByIsRSVPAccepted(bool isRSVPAccepted)
         {
@@ -113,7 +121,6 @@ namespace CoreEntityFramework.Services
             ServiceResponse serviceResponse = new ServiceResponse();
             EventGuest eventGuest = new EventGuest()
             {
-                GuestEventId = eventGuestDto.GuestId,
                 EventId = eventGuestDto.EventId,
                 EventMen = eventGuestDto.EventMen,
                 EventWomen = eventGuestDto.EventWomen,
@@ -130,6 +137,7 @@ namespace CoreEntityFramework.Services
             {
                 serviceResponse.Status = ServiceResponse.ServiceStatus.Error;
                 serviceResponse.Messages.Add(e.Message);
+                return serviceResponse;
             }
             serviceResponse.Status = ServiceResponse.ServiceStatus.Created;
             serviceResponse.CreatedId = eventGuest.GuestEventId;
@@ -142,6 +150,7 @@ namespace CoreEntityFramework.Services
             {
                 GuestEventId = eventGuest.GuestEventId,
                 EventId = eventGuest.EventId,
+                GuestId = eventGuest.GuestId,
                 EventMen = eventGuest.EventMen,
                 EventWomen = eventGuest.EventWomen,
                 EventKids = eventGuest.EventKids
@@ -154,7 +163,7 @@ namespace CoreEntityFramework.Services
             catch (DbUpdateConcurrencyException)
             {
                 serviceResponse.Status = ServiceResponse.ServiceStatus.Error;
-                serviceResponse.Messages.Add("EventGuest Already Exists");
+                serviceResponse.Messages.Add("Udate Failed");
                 return serviceResponse;
             }
             serviceResponse.Status = ServiceResponse.ServiceStatus.Updated;

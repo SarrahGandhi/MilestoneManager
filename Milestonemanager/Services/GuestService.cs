@@ -41,6 +41,7 @@ namespace CoreEntityFramework.Services
             }
             GuestDto guests = new GuestDto()
             {
+                GuestId = guest.GuestId,
                 GuestName = guest.GuestName,
                 GuestLocation = guest.GuestLocation,
                 GuestPhone = guest.GuestPhone,
@@ -80,8 +81,6 @@ namespace CoreEntityFramework.Services
             Guest guest = new Guest()
             {
                 GuestName = guestDto.GuestName,
-                GuestLocation = guestDto.GuestLocation,
-                GuestPhone = guestDto.GuestPhone,
                 IsInvited = guestDto.IsInvited,
                 GuestCategory = guestDto.GuestCategory
             };
@@ -102,9 +101,15 @@ namespace CoreEntityFramework.Services
         public async Task<ServiceResponse> UpdateGuest(GuestDto guest)
         {
             ServiceResponse serviceResponse = new ServiceResponse();
+            if (guest.GuestId == null)
+            {
+                serviceResponse.Status = ServiceResponse.ServiceStatus.Error;
+                serviceResponse.Messages.Add("No Guest Id Given");
+                return serviceResponse;
+            }
             Guest addguest = new Guest()
             {
-                GuestId = guest.GuestId,
+                GuestId = guest.GuestId.Value,
                 GuestName = guest.GuestName,
                 GuestLocation = guest.GuestLocation,
                 GuestPhone = guest.GuestPhone,

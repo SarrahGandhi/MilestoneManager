@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Milestonemanager.Data;
 
@@ -11,9 +12,11 @@ using Milestonemanager.Data;
 namespace Milestonemanager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250222012232_FourthCreate")]
+    partial class FourthCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -450,17 +453,21 @@ namespace Milestonemanager.Data.Migrations
 
             modelBuilder.Entity("Milestonemanager.Models.EventGuest", b =>
                 {
-                    b.HasOne("Milestonemanager.Models.Event", null)
+                    b.HasOne("Milestonemanager.Models.Event", "Event")
                         .WithMany("EventGuests")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Milestonemanager.Models.Guest", null)
+                    b.HasOne("Milestonemanager.Models.Guest", "Guest")
                         .WithMany("EventGuests")
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("Milestonemanager.Models.EventTask", b =>

@@ -1,7 +1,7 @@
 @model IEnumerable<Milestonemanager.Models.EventGuestDto>
 @{
     var GuestName = ViewData["GuestName"] as String;
-    var EventGuest = ViewData["EventGuest"] as List<EventGuest>;
+    var EventGuestList = ViewData["EventGuest"] as List<EventGuestDto>;
 }
 <h1 class="page-title">List Event Guest</h1>
 <div class="button-container">
@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in EventGuest)
+            @foreach (var item in EventGuestList)
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.EventWomen)</td>

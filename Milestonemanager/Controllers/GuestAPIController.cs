@@ -115,6 +115,7 @@ namespace MilestoneManager.Controllers
             {
                 return StatusCode(500, response.Messages);
             }
+            addguest.GuestId = response.CreatedId;
             return Created($"api/Guest/GetGuestById/{response.CreatedId}", addguest);
         }
         /// <summary>

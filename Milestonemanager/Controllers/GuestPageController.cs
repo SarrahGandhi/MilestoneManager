@@ -43,7 +43,7 @@ namespace MilestoneManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var eventGuest = await _eventGuestService.GetEventGuestByEvent(id);
+            var eventGuest = await _eventGuestService.GetEventGuestByGuest(id);
             var guest = await _guestService.GetGuestById(id);
             ViewData["EventGuest"] = eventGuest;
             ViewData["GuestName"] = guest.GuestName;

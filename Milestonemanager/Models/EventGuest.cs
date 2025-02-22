@@ -7,18 +7,21 @@ public class EventGuest
 {
     [Key]
     public int GuestEventId { get; set; }
-    [ForeignKey("Event")]
 
+    [ForeignKey("Event")]
     public int EventId { get; set; }
-    public virtual Event? Event { get; set; }
+
     [ForeignKey("Guest")]
     public int GuestId { get; set; }
-    public virtual Guest? Guest { get; set; }
+
     public bool IsRSVPAccepted { get; set; }
+
     [Required]
     public int EventMen { get; set; }
+
     [Required]
     public int EventWomen { get; set; }
+
     [Required]
     public int EventKids { get; set; }
 

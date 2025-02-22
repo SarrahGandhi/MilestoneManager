@@ -13,8 +13,5 @@ namespace MilestoneManager.Interfaces
         Task<ServiceResponse> UpdateGuest(GuestDto guest);
         Task<ServiceResponse> DeleteGuest(int id);
 
-
-
-
     }
 }
