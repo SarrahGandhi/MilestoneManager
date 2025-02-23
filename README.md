@@ -12,7 +12,7 @@ The **Wedding Planning Manager** is a web application built using **.NET 8.0 (MV
 - **Task Management**: Assign tasks to admins with due dates.
 - **Guest List Management**: Track guest invitations and RSVP status.
 - **Event-Guest Relationship**: Connect guests to specific events.
-- **Role-Based Access**: Limited access for non-primary admins.
+-
 
 ## Technologies Used
 
@@ -32,7 +32,7 @@ The **Wedding Planning Manager** is a web application built using **.NET 8.0 (MV
 4. **Guests**: Stores guest details and invitation status.
 5. **EventGuest**: Many-to-many relationship tracking which guests are attending which events.
 
-## Installation
+
 
 ### Prerequisites
 
@@ -66,17 +66,6 @@ The **Wedding Planning Manager** is a web application built using **.NET 8.0 (MV
 | `/api/tasks`       | GET    | Get all tasks        |
 | `/api/guests`      | GET    | Get all guests       |
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature-name`)
-3. Commit your changes (`git commit -m "Added new feature"`)
-4. Push to the branch (`git push origin feature-name`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the **MIT License**.
 
 ## Contact
 
