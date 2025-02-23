@@ -42,7 +42,7 @@ namespace MilestoneManager.Controllers
         /// <param name="eventGuest">DTO containing event guest details.</param>
         /// <returns>The created event guest along with its location.</returns>
         [HttpPost("AddEventGuest")]
-        public async Task<ActionResult<EventGuestDto>> AddEventGuest(EventGuestDto eventGuest)
+        public async Task<ActionResult<EventGuest>> AddEventGuest(EventGuestDto eventGuest)
         {
             ServiceResponse response = await _eventGuestService.AddEventGuest(eventGuest);
             if (response.Status == ServiceResponse.ServiceStatus.NotFound)

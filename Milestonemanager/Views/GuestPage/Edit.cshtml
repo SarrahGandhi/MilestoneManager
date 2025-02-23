@@ -2,12 +2,14 @@
 
 @{
     ViewData["Title"] = "Edit Guest";
+    var eventList = ViewData["EventsList"] as List<Milestonemanager.Models.Event>;
 }
 
 <h2>Edit Guest</h2>
 
 <form asp-action="EditGuest" method="post">
     <input type="hidden" asp-for="GuestId" />
+
 
     <div class="form-group">
         <label asp-for="GuestName" class="control-label"></label>
@@ -38,21 +40,49 @@
         <input asp-for="IsInvited" type="checkbox" />
         <span asp-validation-for="IsInvited" class="text-danger"></span>
     </div>
-
     <div class="form-group">
-        <label class="control-label">Events</label>
+        <label class="control-label">Events Attending</label>
         <div>
-            @if (EventGuests != null)
+            @if (Model.EventGuests != null)
             {
-                @for (int i = 0; i < EventGuests.Count; i++)
+                @for (int i = 0; i < Model.EventGuests.Count; i++)
                 {
-                    var eventItem = EventGuests[i];
-                    <div></div>
-                }
+                    var eventItem = Model.EventGuests.ElementAt(i);
+                    <div class="form-check">
 
+                        <p>@eventList.FirstOrDefault(x => x.EventId == eventItem.EventId)?.EventName
+                        </p>
+                        <input type="hidden" id="@eventItem.EventId" name="EventGuests[@i].EventId"
+                            value="@eventItem.EventId" />
+                        <input type="hidden" id="@eventItem.GuestEventId" name="EventGuests[@i].GuestEventId"
+                            value="@eventItem.GuestEventId" />
+
+
+
+
+                        <div>
+                            <label for="@eventItem.EventId">Men:</label>
+                            <input type="number" id="@eventItem.EventId" name="EventGuests[@i].EventMen"
+                                value="@eventItem.EventMen" min="0" />
+                        </div>
+                        <div>
+                            <label for="@eventItem.EventId">Women:</label>
+                            <input type="number" id="@eventItem.EventId" name="EventGuests[@i].EventWomen"
+                                value="@eventItem.EventWomen" min="0" />
+                        </div>
+                        <div>
+                            <label for="@eventItem.EventId">Kids:</label>
+                            <input type="number" id="@eventItem.EventId" name="EventGuests[@i].EventKids"
+                                value="@eventItem.EventKids" min="0" />
+                        </div>
+                    </div>
+                }
             }
         </div>
     </div>
+
+
+
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-action="ListGuest" class="btn btn-secondary">Cancel</a>
 </form>

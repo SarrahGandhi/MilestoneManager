@@ -1,178 +1,212 @@
 @model Milestonemanager.Models.Guest
-
 @{
     ViewData["Title"] = "CreateGuest";
     var eventList = ViewData["EventsList"] as List<Milestonemanager.Models.Event>;
 }
-<h2>Create Guest</h2>
-<form asp-action="CreateGuest" method="post">
-    <div class="form-group">
-        <label asp-for="GuestName" class="control-label"></label>
-        <input asp-for="GuestName" class="form-control" required />
-        <span asp-validation-for="GuestName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="GuestLocation" class="control-label"></label>
-        <input asp-for="GuestLocation" class="form-control" required />
-        <span asp-validation-for="GuestLocation" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="GuestAddress" class="control-label"></label>
-        <input asp-for="GuestAddress" class="form-control" required />
-        <span asp-validation-for="GuestAddress" class="text-danger"></span>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="GuestPhone" class="control-label"></label>
-        <input asp-for="GuestPhone" class="form-control" required />
-        <span asp-validation-for="GuestPhone" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="GuestNotes" class="control-label"></label>
-        <input asp-for="GuestNotes" class="form-control" required />
-        <span asp-validation-for="GuestNotes" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IsInvited" class="control-label"></label>
-        <input asp-for="IsInvited" type="checkbox" />
-        <span asp-validation-for="IsInvited" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="GuestCategory" class="control-label"></label>
-        <select asp-for="GuestCategory" class="form-control" required>
-            <option value="">-- Select Side --</option>
-            <option value="Bride">Bride</option>
-            <option value="Groom">Groom</option>
-            <option value="Both">Both</option>
-        </select>
-        <span asp-validation-for="GuestCategory" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
-        <label class="control-label">Select Events</label>
-        <div>
-            @if (eventList != null)
-            {
-                @for (int i = 0; i < eventList.Count; i++)
-                {
-                    var eventItem = eventList[i];
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="event_@eventItem.EventId"
-                            name="EventGuests[@i].EventId" value="@eventItem.EventId" />
-                        <label class="form-check-label" for="event_@eventItem.EventId">@eventItem.EventName</label>
-
-
-                        <div>
-                            <label for="men_@eventItem.EventId">Men:</label>
-                            <input type="number" id="men_@eventItem.EventId" name="EventGuests[@i].EventMen" value="0"
-                                min="0" />
-                        </div>
-                        <div>
-                            <label for="women_@eventItem.EventId">Women:</label>
-                            <input type="number" id="women_@eventItem.EventId" name="EventGuests[@i].EventWomen" value="0"
-                                min="0" />
-                        </div>
-                        <div>
-                            <label for="kids_@eventItem.EventId">Kids:</label>
-                            <input type="number" id="kids_@eventItem.EventId" name="EventGuests[@i].EventKids" value="0"
-                                min="0" />
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary mt-3">Create Guest</button>
-    <a asp-action="ListGuest" class="btn btn-secondary mt-3">Cancel</a>
-
-
-</form>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
 <style>
+    /* Reuse existing styling */
     body {
-        background: linear-gradient(to right, #F3E7DB, #DFC3AE);
+        background: #EFE5DC;
 
     }
 
-    /* Main container styling */
-    .admin-form-container {
-        margin-top: 50px;
+    .form-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: linear-gradient(153deg, #FBFEFB 31.55%, #EFE5DC 98.87%);
+        border-radius: 31px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Card styling */
-    .admin-card {
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease-in-out;
-        background-color: #fff;
-    }
-
-    .admin-card:hover {
-        transform: scale(1.02);
-    }
-
-    /* Header with a pink gradient */
-    .admin-card-header {
-        background: #755b47;
-        /* Hot Pink & Deep Pink */
-        color: rgb(0, 0, 0);
+    h2 {
+        color: #000;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
         text-align: center;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        padding: 15px;
-        font-size: 20px;
-        font-weight: bold;
     }
 
-    /* Label and input styling */
-    .form-label {
-        font-weight: 600;
-        color: #B08B6F;
-        /* Soft pink */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .control-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #000;
+        font-weight: bold;
     }
 
     .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(176, 139, 111, 0.5);
         border-radius: 8px;
-        border: 1px solid #B08B6F;
-        /* Soft pink border */
-        transition: 0.3s ease-in-out;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
     }
 
     .form-control:focus {
-        border-color: #B08B6F;
-        /* Deep Pink focus */
-        box-shadow: 0 0 5px rgba(151, 151, 151, 0.5);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(176, 139, 111, 0.3);
+        background: white;
     }
 
-    /* Button styles */
-    .btn-primary {
-        background-color: #B08B6F;
-        /* Hot Pink */
+    .form-check {
+        margin-bottom: 1rem;
+    }
+
+    .form-check-label {
+        margin-left: 0.5rem;
+        color: #000;
+    }
+
+    .form-check-input {
+        margin-top: 0.3rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
         border: none;
-        padding: 10px;
         border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
         font-weight: bold;
-        transition: 0.3s ease-in-out;
     }
 
-    .btn-primary:hover {
-        background-color: #B08B6F;
-        /* Deep Pink */
-    }
-
-    .btn-outline-secondary {
-        border-radius: 8px;
-        padding: 10px;
-        color: #000000;
-        border: 1px solid #B08B6F;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #755b47;
+    .btn-primary {
+        background: #d9b497;
         color: white;
     }
+
+    .btn-secondary {
+        background: #B08B6F;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+
+    .event-group {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 8px;
+        border: 1px solid rgba(176, 139, 111, 0.3);
+    }
+
+    .event-group label {
+        font-weight: bold;
+        color: #000;
+    }
+
+    .event-group input[type="number"] {
+        width: 80px;
+        padding: 8px;
+        border: 1px solid rgba(176, 139, 111, 0.5);
+        border-radius: 8px;
+        margin-left: 0.5rem;
+    }
 </style>
+
+<div class="form-container">
+    <h2>Create Guest</h2>
+    <form asp-action="CreateGuest" method="post">
+        <div class="form-group">
+            <label asp-for="GuestName" class="control-label"></label>
+            <input asp-for="GuestName" class="form-control" required />
+            <span asp-validation-for="GuestName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestLocation" class="control-label"></label>
+            <input asp-for="GuestLocation" class="form-control" required />
+            <span asp-validation-for="GuestLocation" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestAddress" class="control-label"></label>
+            <input asp-for="GuestAddress" class="form-control" required />
+            <span asp-validation-for="GuestAddress" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestPhone" class="control-label"></label>
+            <input asp-for="GuestPhone" class="form-control" required />
+            <span asp-validation-for="GuestPhone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestNotes" class="control-label"></label>
+            <input asp-for="GuestNotes" class="form-control" required />
+            <span asp-validation-for="GuestNotes" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IsInvited" class="control-label"></label>
+            <input asp-for="IsInvited" type="checkbox" />
+            <span asp-validation-for="IsInvited" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestCategory" class="control-label"></label>
+            <select asp-for="GuestCategory" class="form-control" required>
+                <option value="">-- Select Side --</option>
+                <option value="Bride">Bride</option>
+                <option value="Groom">Groom</option>
+                <option value="Both">Both</option>
+            </select>
+            <span asp-validation-for="GuestCategory" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Select Events</label>
+            <div>
+                @if (eventList != null)
+                {
+                    @for (int i = 0; i < eventList.Count; i++)
+                    {
+                        var eventItem = eventList[i];
+                        <div class="event-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="event_@eventItem.EventId"
+                                    name="EventGuests[@i].EventId" value="@eventItem.EventId" />
+                                <label class="form-check-label" for="event_@eventItem.EventId">@eventItem.EventName</label>
+                            </div>
+
+                            <div>
+                                <label for="men_@eventItem.EventId">Men:</label>
+                                <input type="number" id="men_@eventItem.EventId" name="EventGuests[@i].EventMen" value="0"
+                                    min="0" />
+                            </div>
+                            <div>
+                                <label for="women_@eventItem.EventId">Women:</label>
+                                <input type="number" id="women_@eventItem.EventId" name="EventGuests[@i].EventWomen" value="0"
+                                    min="0" />
+                            </div>
+                            <div>
+                                <label for="kids_@eventItem.EventId">Kids:</label>
+                                <input type="number" id="kids_@eventItem.EventId" name="EventGuests[@i].EventKids" value="0"
+                                    min="0" />
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create Guest</button>
+            <a asp-action="ListGuest" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

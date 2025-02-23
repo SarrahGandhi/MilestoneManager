@@ -12,11 +12,15 @@ namespace MilestoneManager.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IEventTaskService _taskService;
+        private readonly IEventGuestService _eventGuestService;
+        private readonly IGuestService _guestService;
 
-        public EventPageController(IEventService eventService, IEventTaskService taskService)
+        public EventPageController(IEventService eventService, IEventTaskService taskService, IEventGuestService eventGuestService, IGuestService guestService)
         {
             _eventService = eventService;
             _taskService = taskService;
+            _eventGuestService = eventGuestService;
+            _guestService = guestService;
         }
 
         public IActionResult Index()
@@ -43,8 +47,19 @@ namespace MilestoneManager.Controllers
         {
             var tasks = await _taskService.GetEventTasksByEventId(id);
             var event1 = await _eventService.GetEventById(id);
+            var eventguest = await _eventGuestService.GetEventGuestByEvent(id);
+            List<Guest> guestList = new List<Guest>();
+            foreach (var item in eventguest)
+            {
+                var guest = await _guestService.GetGuestById(item.GuestId);
+                guestList.Add(guest);
+            }
+
             ViewData["EventName"] = event1.EventName;
             ViewData["Tasks"] = tasks;
+            ViewData["GuestList"] = guestList;
+            ViewData["EventGuest"] = eventguest;
+
             return View();
         }
 

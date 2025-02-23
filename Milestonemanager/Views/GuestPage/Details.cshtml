@@ -1,7 +1,7 @@
 @model IEnumerable<Milestonemanager.Models.EventGuestDto>
 @{
     var GuestName = ViewData["GuestName"] as String;
-    var EventGuestList = ViewData["EventGuest"] as List<EventGuestDto>;
+    var EventGuestList = ViewData["EventGuest"] as List<EventGuest>;
     var EventList = ViewData["EventList"] as List<Milestonemanager.Models.Event>;
 }
 <h1 class="page-title">List Event Guest</h1>
@@ -10,33 +10,40 @@
 </div>
 <h1>@GuestName</h1>
 <div class="table-container">
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>Event Name</th>
-                <th>Women Invited</th>
-                <th>Men Invited</th>
-                <th>Kids Invited</th>
-                <th>IsRSVPAccepted</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in EventGuestList)
-            {
+    @if (EventGuestList != null)
+    {
+        <table class="styled-table">
+            <thead>
                 <tr>
-                    <td>@EventList?.FirstOrDefault(x => x.EventId == item.EventId)?.EventName</td>
-                    <td>@Html.DisplayFor(modelItem => item.EventWomen)</td>
-                    <td>@Html.DisplayFor(modelItem => item.EventMen)</td>
-                    <td>@Html.DisplayFor(modelItem => item.EventKids)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IsRSVPAccepted)</td>
+                    <th>Event Name</th>
+                    <th>Women Invited</th>
+                    <th>Men Invited</th>
+                    <th>Kids Invited</th>
+                    <th>IsRSVPAccepted</th>
+
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in EventGuestList)
+                {
+                    <tr>
+                        <td>@EventList?.FirstOrDefault(x => x.EventId == item.EventId)?.EventName</td>
+                        <td>@Html.DisplayFor(modelItem => item.EventWomen)</td>
+                        <td>@Html.DisplayFor(modelItem => item.EventMen)</td>
+                        <td>@Html.DisplayFor(modelItem => item.EventKids)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IsRSVPAccepted)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>No Events Found</h1>
+    }
 </div>
+
 <style>
-    /* Reuse existing styling */
     body {
         background: #EFE5DC;
 
@@ -54,7 +61,7 @@
         text-align: right;
     }
 
-    /* Table styling matching previous implementations */
+    /* T    able styling matching previous implementations */
     .table-container {
         width: 100%;
         max-width: 1000px;
@@ -73,7 +80,7 @@
         margin-bottom: 2rem;
     }
 
-    .styled-table thead th {
+    .sty led-table thead th {
         background: #B08B6F;
         color: white;
         padding: 12px 15px;
@@ -107,12 +114,12 @@
         color: white;
     }
 
-    .btn-secondary {
+    .btn -secondary {
         background: #B08B6F;
         color: white;
     }
 
-    .btn:hover {
+    .btn :hover {
         opacity: 0.9;
     }
 
@@ -121,4 +128,3 @@
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
     }
-</style>

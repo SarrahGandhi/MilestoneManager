@@ -6,7 +6,7 @@ namespace MilestoneManager.Interfaces
     {
         Task<IEnumerable<EventGuest>> GetEventGuests();
         Task<EventGuest> GetEventGuestById(int id);
-        Task<EventGuestDto> GetEventGuestByEvent(int eventId);
+        Task<List<EventGuest>> GetEventGuestByEvent(int eventId);
         Task<List<EventGuest>> GetEventGuestByGuest(int guestId);
         Task<List<EventGuest>> GetEventGuestsByIsRSVPAccepted(bool isRSVPAccepted);
         Task<List<EventGuest>> GetEventGuestsByEventMen(int eventMen);

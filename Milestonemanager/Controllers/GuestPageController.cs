@@ -109,6 +109,8 @@ namespace MilestoneManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            var eventList = await _eventService.GetEvents();
+            ViewData["EventsList"] = eventList.ToList();
             var guest = await _guestService.GetGuestById(id);
             var eventGuest = await _eventGuestService.GetEventGuestByGuest(id);
             if (guest == null)
@@ -132,11 +134,37 @@ namespace MilestoneManager.Controllers
         // Handle the update of an guest
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditGuest(GuestDto guestDto)
+        public async Task<IActionResult> EditGuest(Guest guest)
         {
+            var guestDto = new GuestDto()
+            {
+                GuestId = guest.GuestId,
+                GuestName = guest.GuestName,
+                GuestLocation = guest.GuestLocation,
+                GuestAddress = guest.GuestAddress,
+                GuestPhone = guest.GuestPhone,
+                IsInvited = guest.IsInvited,
+                GuestCategory = guest.GuestCategory
+            };
             var response = await _guestService.UpdateGuest(guestDto);
             if (response.Status == ServiceResponse.ServiceStatus.Updated)
             {
+                foreach (var eventGuest in guest.EventGuests)
+                {
+                    var eventGuestDto = new EventGuestDto()
+                    {
+                        GuestEventId = eventGuest.GuestEventId,
+                        GuestId = guest.GuestId,
+                        EventId = eventGuest.EventId,
+                        EventMen = eventGuest.EventMen,
+                        EventWomen = eventGuest.EventWomen,
+                        EventKids = eventGuest.EventKids,
+                        IsRSVPAccepted = eventGuest.IsRSVPAccepted
+                    };
+                    var eventGuestResponse = await _eventGuestService.UpdateEventGuest(eventGuestDto);
+                }
+
+
                 return RedirectToAction("ListGuest", "GuestPage");
             }
             else

@@ -2,6 +2,8 @@
 @{
     var EventName = ViewData["EventName"] as String;
     var EventTask = ViewData["Tasks"] as List<EventTask>;
+    var GuestList = ViewData["GuestList"] as List<Guest>;
+    var EventGuest = ViewData["EventGuest"] as List<EventGuest>;
 }
 
 <style>
@@ -115,7 +117,32 @@
                 </tr>
             }
         </tbody>
-    </table>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Guest Name</th>
+                    <th>Guest Location</th>
+                    <th>Guest Category</th>
+                    <th>Men</th>
+                    <th>Women</th>
+                    <td>Kids</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in GuestList)
+                {
+                    <tr>
+                        <td>@item.GuestName</td>
+                        <td>@item.GuestLocation</td>
+                        <td>@item.GuestCategory</td>
+                        <td>@EventGuest?.FirstOrDefault(x => x.GuestId == item.GuestId)?.EventMen</td>
+                        <td>@EventGuest?.FirstOrDefault(x => x.GuestId == item.GuestId)?.EventWomen</td>
+                        <td>@EventGuest?.FirstOrDefault(x => x.GuestId == item.GuestId)?.EventKids</td>
+                    </tr>
+                }
+            </tbody>
 
-    <a asp-action="ListEvent" class="btn btn-secondary">Back to List</a>
+        </table>
+
+        <a asp-action="ListEvent" class="btn btn-secondary">Back to List</a>
 </div>

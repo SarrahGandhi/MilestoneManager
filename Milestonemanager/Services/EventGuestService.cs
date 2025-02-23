@@ -49,23 +49,28 @@ namespace CoreEntityFramework.Services
             };
             return eventGuests;
         }
-        public async Task<EventGuestDto> GetEventGuestByEvent(int eventId)
+        public async Task<List<EventGuest>> GetEventGuestByEvent(int eventId)
         {
-            var eventGuest = await _context.EventGuests.FirstOrDefaultAsync(x => x.EventId == eventId);
-            if (eventGuest == null)
+            var eventGuests = await _context.EventGuests.Where(x => x.EventId == eventId).ToListAsync();
+            if (eventGuests == null)
             {
                 return null;
             }
-            EventGuestDto eventGuests = new EventGuestDto()
+            List<EventGuest> eventGuestList = new List<EventGuest>();
+            foreach (var eventGuest in eventGuests)
             {
-                EventId = eventGuest.EventId,
-                GuestId = eventGuest.GuestId,
-                IsRSVPAccepted = eventGuest.IsRSVPAccepted,
-                EventMen = eventGuest.EventMen,
-                EventWomen = eventGuest.EventWomen,
-                EventKids = eventGuest.EventKids
-            };
-            return eventGuests;
+                eventGuestList.Add(new EventGuest()
+                {
+                    GuestEventId = eventGuest.GuestEventId,
+                    EventId = eventGuest.EventId,
+                    GuestId = eventGuest.GuestId,
+                    EventMen = eventGuest.EventMen,
+                    EventWomen = eventGuest.EventWomen,
+                    EventKids = eventGuest.EventKids
+                });
+
+            }
+            return eventGuestList;
         }
         public async Task<List<EventGuest>> GetEventGuestByGuest(int guestId)
         {
@@ -161,7 +166,7 @@ namespace CoreEntityFramework.Services
             catch (DbUpdateConcurrencyException)
             {
                 serviceResponse.Status = ServiceResponse.ServiceStatus.Error;
-                serviceResponse.Messages.Add("Udate Failed");
+                serviceResponse.Messages.Add("Update Failed");
                 return serviceResponse;
             }
             serviceResponse.Status = ServiceResponse.ServiceStatus.Updated;
