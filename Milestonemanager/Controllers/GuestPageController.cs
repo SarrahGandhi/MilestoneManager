@@ -50,6 +50,7 @@ namespace MilestoneManager.Controllers
             var eventList = await _eventService.GetEvents();
             ViewData["EventGuest"] = eventGuest;
             ViewData["GuestName"] = guest.GuestName;
+            ViewData["Guestnotes"] = guest.GuestNotes;
             ViewData["EventList"] = eventList.ToList();
             return View();
         }
@@ -143,6 +144,7 @@ namespace MilestoneManager.Controllers
                 GuestLocation = guest.GuestLocation,
                 GuestAddress = guest.GuestAddress,
                 GuestPhone = guest.GuestPhone,
+                GuestNotes = guest.GuestNotes,
                 IsInvited = guest.IsInvited,
                 GuestCategory = guest.GuestCategory
             };

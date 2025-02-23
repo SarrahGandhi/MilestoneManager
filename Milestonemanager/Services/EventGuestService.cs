@@ -124,6 +124,7 @@ namespace CoreEntityFramework.Services
             ServiceResponse serviceResponse = new ServiceResponse();
             EventGuest eventGuest = new EventGuest()
             {
+
                 EventId = eventGuestDto.EventId,
                 EventMen = eventGuestDto.EventMen,
                 EventWomen = eventGuestDto.EventWomen,

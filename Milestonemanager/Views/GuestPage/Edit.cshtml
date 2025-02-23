@@ -1,116 +1,32 @@
 @model Milestonemanager.Models.Guest
-
 @{
     ViewData["Title"] = "Edit Guest";
     var eventList = ViewData["EventsList"] as List<Milestonemanager.Models.Event>;
 }
 
-<h2>Edit Guest</h2>
-
-<form asp-action="EditGuest" method="post">
-    <input type="hidden" asp-for="GuestId" />
-
-
-    <div class="form-group">
-        <label asp-for="GuestName" class="control-label"></label>
-        <input asp-for="GuestName" class="form-control" />
-        <span asp-validation-for="GuestName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="GuestLocation" class="control-label"></label>
-        <input asp-for="GuestLocation" class="form-control" />
-        <span asp-validation-for="GuestLocation" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="GuestPhone" class="control-label"></label>
-        <input asp-for="GuestPhone" class="form-control" />
-        <span asp-validation-for="GuestPhone" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="GuestCategory" class="control-label"></label>
-        <input asp-for="GuestCategory" class="form-control" />
-        <span asp-validation-for="GuestCategory" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IsInvited" class="control-label"></label>
-        <input asp-for="IsInvited" type="checkbox" />
-        <span asp-validation-for="IsInvited" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label class="control-label">Events Attending</label>
-        <div>
-            @if (Model.EventGuests != null)
-            {
-                @for (int i = 0; i < Model.EventGuests.Count; i++)
-                {
-                    var eventItem = Model.EventGuests.ElementAt(i);
-                    <div class="form-check">
-
-                        <p>@eventList.FirstOrDefault(x => x.EventId == eventItem.EventId)?.EventName
-                        </p>
-                        <input type="hidden" id="@eventItem.EventId" name="EventGuests[@i].EventId"
-                            value="@eventItem.EventId" />
-                        <input type="hidden" id="@eventItem.GuestEventId" name="EventGuests[@i].GuestEventId"
-                            value="@eventItem.GuestEventId" />
-
-
-
-
-                        <div>
-                            <label for="@eventItem.EventId">Men:</label>
-                            <input type="number" id="@eventItem.EventId" name="EventGuests[@i].EventMen"
-                                value="@eventItem.EventMen" min="0" />
-                        </div>
-                        <div>
-                            <label for="@eventItem.EventId">Women:</label>
-                            <input type="number" id="@eventItem.EventId" name="EventGuests[@i].EventWomen"
-                                value="@eventItem.EventWomen" min="0" />
-                        </div>
-                        <div>
-                            <label for="@eventItem.EventId">Kids:</label>
-                            <input type="number" id="@eventItem.EventId" name="EventGuests[@i].EventKids"
-                                value="@eventItem.EventKids" min="0" />
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-
-
-
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a asp-action="ListGuest" class="btn btn-secondary">Cancel</a>
-</form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
 <style>
-    /* Reuse the same body background */
+    /* Reuse existing styling */
     body {
         background: #EFE5DC;
-
+        font-size: 12px;
     }
 
-    /* Form Container using similar styling to table-container */
     .form-container {
-        width: 100%;
-        max-width: 600px;
+        max-width: 800px;
         margin: 2rem auto;
-        padding: 30px;
+        padding: 2rem;
+        background: linear-gradient(153deg, #FBFEFB 31.55%, #EFE5DC 98.87%);
         border-radius: 31px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        background: linear-gradient(153deg, #FBFEFB 31.55%, #EFE5DC 98.87%);
     }
 
-    /* Form element styling */
+    h2 {
+        color: #000;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
     .form-group {
         margin-bottom: 1.5rem;
     }
@@ -125,7 +41,7 @@
     .form-control {
         width: 100%;
         padding: 12px 15px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(176, 139, 111, 0.5);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.8);
         transition: all 0.3s ease;
@@ -137,7 +53,19 @@
         background: white;
     }
 
-    /* Button styling matching the table actions */
+    .form-check {
+        margin-bottom: 1rem;
+    }
+
+    .form-check-label {
+        margin-left: 0.5rem;
+        color: #000;
+    }
+
+    .form-check-input {
+        margin-top: 0.3rem;
+    }
+
     .btn {
         padding: 10px 20px;
         border: none;
@@ -145,23 +73,21 @@
         cursor: pointer;
         transition: 0.3s;
         text-decoration: none;
-        display: inline-block;
-        text-align: center;
+        font-weight: bold;
     }
 
     .btn-primary {
-        background-color: #d9b497;
+        background: #d9b497;
         color: white;
     }
 
     .btn-secondary {
-        background-color: #B08B6F;
+        background: #B08B6F;
         color: white;
     }
 
     .btn:hover {
-        background-color: #B08B6F;
-        color: white;
+        opacity: 0.9;
     }
 
     .text-danger {
@@ -170,9 +96,128 @@
         margin-top: 0.25rem;
     }
 
-    h2 {
+    .event-group {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 8px;
+        border: 1px solid rgba(176, 139, 111, 0.3);
+    }
+
+    .event-group label {
+        font-weight: bold;
         color: #000;
-        margin-bottom: 2rem;
-        text-align: center;
+    }
+
+    .event-group input[type="number"] {
+        width: 80px;
+        padding: 8px;
+        border: 1px solid rgba(176, 139, 111, 0.5);
+        border-radius: 8px;
+        margin-left: 0.5rem;
     }
 </style>
+
+<div class="form-container">
+    <h2>Edit Guest</h2>
+    <form asp-action="EditGuest" method="post">
+        <input type="hidden" asp-for="GuestId" />
+
+        <div class="form-group">
+            <label asp-for="GuestName" class="control-label"></label>
+            <input asp-for="GuestName" class="form-control" />
+            <span asp-validation-for="GuestName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestLocation" class="control-label"></label>
+            <input asp-for="GuestLocation" class="form-control" />
+            <span asp-validation-for="GuestLocation" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GuestAddress" class="control-label"></label>
+            <input asp-for="GuestAddress" class="form-control" />
+            <span asp-validation-for="GuestAddress" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestPhone" class="control-label"></label>
+            <input asp-for="GuestPhone" class="form-control" />
+            <span asp-validation-for="GuestPhone" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GuestNotes" class="control-label"></label>
+            <input asp-for="GuestNotes" class="form-control" />
+            <span asp-validation-for="GuestNotes" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GuestCategory" class="control-label"></label>
+            <input asp-for="GuestCategory" class="form-control" />
+            <span asp-validation-for="GuestCategory" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IsInvited" class="control-label"></label>
+            <input asp-for="IsInvited" type="checkbox" />
+            <span asp-validation-for="IsInvited" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Events Attending</label>
+            <div>
+                @if (Model.EventGuests != null)
+                {
+                    @for (int i = 0; i < Model.EventGuests.Count; i++)
+                    {
+                        var eventItem = Model.EventGuests.ElementAt(i);
+                        var eventName = eventList.FirstOrDefault(x => x.EventId == eventItem.EventId)?.EventName;
+
+                        <input type="hidden" id="@eventItem.GuestEventId" name="EventGuests[@i].GuestEventId"
+                            value="@eventItem.GuestEventId" />
+
+                        <div class="event-group">
+                            <div class="form-check">
+
+                                <input type="hidden" id="event_@eventItem.EventId" name="EventGuests[@i].EventId"
+                                    value="@eventItem.EventId" />
+                                <label class="form-check-label" for="event_@eventItem.EventId">@eventName</label>
+                            </div>
+
+                            <div class="input-group" id="input-group_@eventItem.EventId">
+                                <div>
+                                    <label for="men_@eventItem.EventMen">Men:</label>
+                                    <input type="number" id="men_@eventItem.EventMen" name="EventGuests[@i].EventMen"
+                                        value="@eventItem.EventMen" min="0" />
+                                </div>
+                                <div>
+                                    <label for="women_@eventItem.EventWomen">Women:</label>
+                                    <input type="number" id="women_@eventItem.EventWomen" name="EventGuests[@i].EventWomen"
+                                        value="@eventItem.EventWomen" min="0" />
+                                </div>
+                                <div>
+                                    <label for="kids_@eventItem.EventKids">Kids:</label>
+                                    <input type="number" id="kids_@eventItem.EventKids" name="EventGuests[@i].EventKids"
+                                        value="@eventItem.EventKids" min="0" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="ListGuest" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

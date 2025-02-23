@@ -26,6 +26,8 @@ namespace CoreEntityFramework.Services
                 {
                     GuestId = guest.GuestId,
                     GuestName = guest.GuestName,
+
+                    GuestAddress = guest.GuestAddress,
                     GuestLocation = guest.GuestLocation,
                     GuestPhone = guest.GuestPhone,
                     IsInvited = guest.IsInvited,
@@ -47,6 +49,8 @@ namespace CoreEntityFramework.Services
                 GuestId = guest.GuestId,
                 GuestName = guest.GuestName,
                 GuestLocation = guest.GuestLocation,
+                GuestNotes = guest.GuestNotes,
+                GuestAddress = guest.GuestAddress,
                 GuestPhone = guest.GuestPhone,
                 IsInvited = guest.IsInvited,
                 GuestCategory = guest.GuestCategory
@@ -85,6 +89,10 @@ namespace CoreEntityFramework.Services
             {
                 GuestName = guestDto.GuestName,
                 IsInvited = guestDto.IsInvited,
+                GuestLocation = guestDto.GuestLocation,
+                GuestAddress = guestDto.GuestAddress,
+                GuestPhone = guestDto.GuestPhone,
+                GuestNotes = guestDto.GuestNotes,
                 GuestCategory = guestDto.GuestCategory
             };
             try
@@ -114,6 +122,8 @@ namespace CoreEntityFramework.Services
             {
                 GuestId = guest.GuestId.Value,
                 GuestName = guest.GuestName,
+                GuestNotes = guest.GuestNotes,
+                GuestAddress = guest.GuestAddress,
                 GuestLocation = guest.GuestLocation,
                 GuestPhone = guest.GuestPhone,
                 IsInvited = guest.IsInvited,

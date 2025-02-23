@@ -17,6 +17,7 @@
                 <th>Name</th>
                 <th>Location</th>
                 <th>Address</th>
+                <th>Phone Number</th>
                 <th>Invitation Sent</th>
                 <th>Category</th>
 
@@ -29,6 +30,7 @@
                     <td>@Html.DisplayFor(modelItem => item.GuestName)</td>
                     <td>@Html.DisplayFor(modelItem => item.GuestLocation)</td>
                     <td>@Html.DisplayFor(modelItem => item.GuestAddress)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GuestPhone)</td>
                     <td>@Html.DisplayFor(modelItem => item.IsInvited)</td>
                     <td>@Html.DisplayFor(modelItem => item.GuestCategory)</td>
                     <td><a asp-action="Edit" asp-route-id="@item.GuestId" class="btn">✏️</a>
