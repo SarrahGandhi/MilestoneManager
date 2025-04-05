@@ -1,0 +1,40 @@
+@model IEnumerable<Milestonemanager.Models.SongDTO>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1 class="page-title">List Songs</h1>
+
+<div class="button-container">
+    <a asp-action="Create" class="btn">Create New Song</a>
+</div>
+
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Artist)</th>
+                <th>@Html.DisplayNameFor(model => model.Genre)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Artist)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.SongID" class="btn btn-mushroom">✏️</a>
+                        <a asp-action="Delete" asp-route-id="@item.SongID" class="btn btn-blush">🗑</a>
+                        <a asp-action="Details" asp-route-id="@item.SongID" class="btn">📋</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</div>

@@ -10,7 +10,7 @@ namespace MilestoneManager.Interfaces
         Task<GuestDto> GetGuestByName(string name);
         Task<List<Guest>> GetGuestsByCategory(GuestCategory category);
         Task<ServiceResponse> AddGuest(GuestDto guestDto);
-        Task<ServiceResponse> UpdateGuest(GuestDto guest);
+        Task<ServiceResponse> UpdateGuest(GuestDto guestDTO);
         Task<ServiceResponse> DeleteGuest(int id);
 
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Milestonemanager.Data;
 
@@ -11,9 +12,11 @@ using Milestonemanager.Data;
 namespace Milestonemanager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402151554_Weddingplaylist")]
+    partial class Weddingplaylist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -316,29 +319,6 @@ namespace Milestonemanager.Data.Migrations
                     b.ToTable("EventGuests");
                 });
 
-            modelBuilder.Entity("Milestonemanager.Models.EventSong", b =>
-                {
-                    b.Property<int>("EventSongID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EventSongID"));
-
-                    b.Property<int>("EventID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SongID")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventSongID");
-
-                    b.HasIndex("EventID");
-
-                    b.HasIndex("SongID");
-
-                    b.ToTable("EventSongs");
-                });
-
             modelBuilder.Entity("Milestonemanager.Models.EventTask", b =>
                 {
                     b.Property<int>("TaskId")
@@ -420,114 +400,6 @@ namespace Milestonemanager.Data.Migrations
                     b.ToTable("Guests");
                 });
 
-            modelBuilder.Entity("Milestonemanager.Models.GuestSongRequest", b =>
-                {
-                    b.Property<int>("RequestID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RequestID"));
-
-                    b.Property<int>("EventID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GuestID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SongID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("RequestID");
-
-                    b.HasIndex("EventID");
-
-                    b.HasIndex("GuestID");
-
-                    b.HasIndex("SongID");
-
-                    b.ToTable("GuestSongRequests");
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.Playlist", b =>
-                {
-                    b.Property<int>("PlaylistID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PlaylistID"));
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("PlaylistID");
-
-                    b.ToTable("Playlists");
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.PlaylistSong", b =>
-                {
-                    b.Property<int>("PlaylistSongID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PlaylistSongID"));
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlaylistID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SongID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlaylistSongID");
-
-                    b.HasIndex("PlaylistID");
-
-                    b.HasIndex("SongID");
-
-                    b.ToTable("PlaylistSongs");
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.Song", b =>
-                {
-                    b.Property<int>("SongID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("SongID"));
-
-                    b.Property<string>("Artist")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("SongID");
-
-                    b.ToTable("Songs");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -594,25 +466,6 @@ namespace Milestonemanager.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Milestonemanager.Models.EventSong", b =>
-                {
-                    b.HasOne("Milestonemanager.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Milestonemanager.Models.Song", "Song")
-                        .WithMany("EventSongs")
-                        .HasForeignKey("SongID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Song");
-                });
-
             modelBuilder.Entity("Milestonemanager.Models.EventTask", b =>
                 {
                     b.HasOne("Milestonemanager.Models.Admin", null)
@@ -626,52 +479,6 @@ namespace Milestonemanager.Data.Migrations
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.GuestSongRequest", b =>
-                {
-                    b.HasOne("Milestonemanager.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Milestonemanager.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Milestonemanager.Models.Song", "Song")
-                        .WithMany("GuestSongRequests")
-                        .HasForeignKey("SongID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Guest");
-
-                    b.Navigation("Song");
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.PlaylistSong", b =>
-                {
-                    b.HasOne("Milestonemanager.Models.Playlist", "Playlist")
-                        .WithMany("PlaylistSongs")
-                        .HasForeignKey("PlaylistID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Milestonemanager.Models.Song", "Song")
-                        .WithMany("PlaylistSongs")
-                        .HasForeignKey("SongID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Playlist");
-
-                    b.Navigation("Song");
                 });
 
             modelBuilder.Entity("Milestonemanager.Models.Admin", b =>
@@ -689,20 +496,6 @@ namespace Milestonemanager.Data.Migrations
             modelBuilder.Entity("Milestonemanager.Models.Guest", b =>
                 {
                     b.Navigation("EventGuests");
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.Playlist", b =>
-                {
-                    b.Navigation("PlaylistSongs");
-                });
-
-            modelBuilder.Entity("Milestonemanager.Models.Song", b =>
-                {
-                    b.Navigation("EventSongs");
-
-                    b.Navigation("GuestSongRequests");
-
-                    b.Navigation("PlaylistSongs");
                 });
 #pragma warning restore 612, 618
         }

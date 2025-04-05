@@ -15,4 +15,9 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Event> Events { get; set; }
     public DbSet<EventGuest> EventGuests { get; set; }
     public DbSet<EventTask> EventTasks { get; set; }
+    public DbSet<EventSong> EventSongs { get; set; }
+    public DbSet<Playlist> Playlists { get; set; }
+    public DbSet<PlaylistSong> PlaylistSongs { get; set; }
+    public DbSet<Song> Songs { get; set; }
+    public DbSet<GuestSongRequest> GuestSongRequests { get; set; }
 }
